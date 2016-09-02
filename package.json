@@ -4,6 +4,9 @@
   "description": "Create cascading style sheets from within your React components",
   "main": "lib/index.js",
   "scripts": {
+    "start": "http-server examples/ -c-0 -o",
+    "build": "mkdir -p examples/build/js && browserify examples/src/js/index.js -o examples/build/js/index.js",
+    "watch": "mkdir -p examples/build/js && watchify examples/src/js/index.js -o examples/build/js/index.js -v",
     "test": "eslint -c node_modules/eslintrc/.eslintrc-es5-react lib/"
   },
   "repository": {
@@ -24,7 +27,10 @@
   },
   "homepage": "https://github.com/jakesidsmith/react-style-sheets#readme",
   "devDependencies": {
+    "browserify": "^13.1.0",
     "eslint": "=3.4.0",
-    "eslintrc": "git+https://github.com/JakeSidSmith/eslintrc.git#v0.0.2"
+    "eslintrc": "git+https://github.com/JakeSidSmith/eslintrc.git#v0.0.2",
+    "http-server": "^0.9.0",
+    "watchify": "^3.7.0"
   }
 }
