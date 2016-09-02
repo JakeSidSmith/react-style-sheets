@@ -1,0 +1,30 @@
+{
+  "name": "react-style-sheets",
+  "version": "0.0.0",
+  "description": "Create cascading style sheets from within your React components",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "eslint -c node_modules/eslintrc/.eslintrc-es5-react lib/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jakesidsmith/react-style-sheets.git"
+  },
+  "keywords": [
+    "react",
+    "style",
+    "sheets",
+    "css",
+    "inline"
+  ],
+  "author": "Jake 'Sid' Smith",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jakesidsmith/react-style-sheets/issues"
+  },
+  "homepage": "https://github.com/jakesidsmith/react-style-sheets#readme",
+  "devDependencies": {
+    "eslint": "=3.4.0",
+    "eslintrc": "git+https://github.com/JakeSidSmith/eslintrc.git#v0.0.2"
+  }
+}
