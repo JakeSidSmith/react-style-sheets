@@ -24,7 +24,7 @@
     html: bodyHtml,
     p: {
       margin: [10, 0],
-      transform: 'rotate(45deg)',
+      transform: 'rotate(10deg)',
       transformOrigin: '0 0'
     },
     h1: {

@@ -7,7 +7,7 @@
     "start": "http-server examples/ -c-0 -o",
     "build": "mkdir -p examples/build/js && browserify examples/src/js/index.js -o examples/build/js/index.js",
     "watch": "mkdir -p examples/build/js && watchify examples/src/js/index.js -o examples/build/js/index.js -v",
-    "test": "eslint -c node_modules/eslintrc/.eslintrc-es5-react lib/"
+    "test": "eslint -c node_modules/eslintrc/.eslintrc-es5-react lib/ examples/src/js/"
   },
   "repository": {
     "type": "git",
