@@ -85,6 +85,22 @@
               </pre>
             </li>
             <li>
+              You can nest selectors
+              <pre>
+                {
+                  'ReactStyleSheets.createGlobalTagStyles({\n' +
+                  '  li: {\n' +
+                  '    firstChild: {\n' +
+                  '      before: {\n' +
+                  '        content: \'">"\'\n' +
+                  '      }\n' +
+                  '    }\n' +
+                  '  }\n' +
+                  '});'
+                }
+              </pre>
+            </li>
+            <li>
               Class names are unique (and obfuscated by default) preventing accidental style inheritance
               <pre>
                 {
