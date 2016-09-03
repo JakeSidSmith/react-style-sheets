@@ -16,6 +16,10 @@
     fontSize: 14
   };
 
+  var text = {
+    margin: [10, 'auto']
+  };
+
   ReactStyleSheets.createGlobalTagStyles({
     '*': {
       boxSizing: 'border-box'
@@ -31,6 +35,17 @@
     },
     img: {
       border: 'none'
+    },
+    p: text,
+    h1: text,
+    h2: text,
+    h3: text,
+    h4: text,
+    h5: text,
+    li: text,
+    ul: {
+      margin: [10, 'auto'],
+      paddingLeft: 20
     }
   });
 
