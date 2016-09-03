@@ -25,7 +25,8 @@
     p: {
       margin: [10, 0],
       transform: 'rotate(10deg)',
-      transformOrigin: '0 0'
+      transformOrigin: '0 0',
+      opacity: 0.5
     },
     h1: {
       margin: {
