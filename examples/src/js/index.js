@@ -12,7 +12,7 @@
   var bodyHtml = {
     margin: 0,
     padding: 0,
-    fontFamily: ['arail', 'helvetica', 'sans-serif'],
+    fontFamily: ['arail', 'helvetica', 'sans-serif'].join(', '),
     fontSize: 14
   };
 
