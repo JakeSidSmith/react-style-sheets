@@ -4,9 +4,12 @@
 
   var ReactStyleSheets = require('../../../lib/index');
 
-  ReactStyleSheets.setVendorPrefixes({
-    transform: ['webkit', 'moz', 'ms', 'o'],
-    transformOrigin: ['webkit', 'moz', 'ms', 'o']
+  ReactStyleSheets.setOptions({
+    obfuscate: true,
+    vendorPrefixes: {
+      transform: ['webkit', 'moz', 'ms', 'o'],
+      transformOrigin: ['webkit', 'moz', 'ms', 'o']
+    }
   });
 
   var bodyHtml = {
@@ -41,5 +44,13 @@
       }
     }
   });
+
+  var classNames = ReactStyleSheets.createUniqueClassStyles({
+    myClass: {
+      color: 'green'
+    }
+  });
+
+  console.log(classNames);
 
 })();
