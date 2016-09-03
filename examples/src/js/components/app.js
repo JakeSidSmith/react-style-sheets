@@ -115,7 +115,7 @@
                   '// And you end up with some classNames like the following\n\n' +
 
                   '{\n' +
-                  '  myClass: \'myClass_hfseo\'\n' +
+                  '  myClass: \'myClass_obfus\'\n' +
                   '}\n\n' +
 
                   '// You can then use this in your React components\n\n' +
@@ -127,7 +127,7 @@
                   '// Which references the styles generated in the style tag\n\n' +
 
                   '<style type="text/css">\n' +
-                  '  .myClass_hfsoe {\n' +
+                  '  .myClass_obfus {\n' +
                   '    color: red;\n' +
                   '  }\n' +
                   '</style>'
