@@ -28,7 +28,7 @@
             About
           </h2>
           <p>
-            React Style Sheets allows defining styles in your javascript similarly to React Native,
+            React Style Sheets allows defining styles in your javascript in a similar way to React Native,
             but unlike React Native (or libraries like {
               <a href="https://github.com/js-next/react-style">
                 React Style
@@ -101,40 +101,6 @@
               </pre>
             </li>
             <li>
-              Class names are unique (and obfuscated by default) preventing accidental style inheritance
-              <pre>
-                {
-                  '// Define your styles\n\n' +
-
-                  'var classNames = ReactStyleSheets.createUniqueClassStyles({\n' +
-                  '  myClass: {\n' +
-                  '    color: \'red\'\n' +
-                  '  }\n' +
-                  '});\n\n' +
-
-                  '// And you end up with some classNames like the following\n\n' +
-
-                  '{\n' +
-                  '  myClass: \'myClass_obfus\'\n' +
-                  '}\n\n' +
-
-                  '// You can then use this in your React components\n\n' +
-
-                  '<div classNames={classNames.myClas}>\n' +
-                  '  Hello, World!\n' +
-                  '</div>\n\n' +
-
-                  '// Which references the styles generated in the style tag\n\n' +
-
-                  '<style type="text/css">\n' +
-                  '  .myClass_obfus {\n' +
-                  '    color: red;\n' +
-                  '  }\n' +
-                  '</style>'
-                }
-              </pre>
-            </li>
-            <li>
               You can easily define styles with our intuative API
               <pre>
                 {
@@ -169,6 +135,54 @@
                   '  p {\n' +
                   '    margin-top: 10px;\n' +
                   '    margin-bottom: 10px;\n' +
+                  '  }\n' +
+                  '</style>'
+                }
+              </pre>
+            </li>
+          </ul>
+          <p>
+            Benefits of React Style Sheets over using CSS, and CSS pre/post-processors include
+          </p>
+          <ul>
+            <li>
+              Keep your styles, component logic, and markup in the same file
+            </li>
+            <li>
+              Automatically add vendor prefixes
+            </li>
+            <li>
+              No additional dependencies - parse and bundle your styles with your chosen javascript build tools
+            </li>
+            <li>
+              Class names are unique (and obfuscated by default) preventing accidental style inheritance
+              <pre>
+                {
+                  '// Define your styles\n\n' +
+
+                  'var classNames = ReactStyleSheets.createUniqueClassStyles({\n' +
+                  '  myClass: {\n' +
+                  '    color: \'red\'\n' +
+                  '  }\n' +
+                  '});\n\n' +
+
+                  '// And you end up with some classNames like the following\n\n' +
+
+                  '{\n' +
+                  '  myClass: \'myClass_obfus\'\n' +
+                  '}\n\n' +
+
+                  '// You can then use this in your React components\n\n' +
+
+                  '<div classNames={classNames.myClas}>\n' +
+                  '  Hello, World!\n' +
+                  '</div>\n\n' +
+
+                  '// Which references the styles generated in the style tag\n\n' +
+
+                  '<style type="text/css">\n' +
+                  '  .myClass_obfus {\n' +
+                  '    color: red;\n' +
                   '  }\n' +
                   '</style>'
                 }
