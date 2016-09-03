@@ -26,7 +26,10 @@
       margin: [10, 0],
       transform: 'rotate(10deg)',
       transformOrigin: '0 0',
-      opacity: 0.5
+      opacity: 0.5,
+      hover: {
+        color: 'red'
+      }
     },
     h1: {
       margin: {
