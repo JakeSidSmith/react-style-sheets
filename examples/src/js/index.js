@@ -6,6 +6,7 @@
 
   ReactStyleSheets.setOptions({
     obfuscate: true,
+    minify: false,
     vendorPrefixes: {
       transform: ['webkit', 'moz', 'ms', 'o'],
       transformOrigin: ['webkit', 'moz', 'ms', 'o']
