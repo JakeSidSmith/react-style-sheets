@@ -28,7 +28,10 @@
       transformOrigin: '0 0',
       opacity: 0.5,
       hover: {
-        color: 'red'
+        color: 'red',
+        before: {
+          content: '">"'
+        }
       }
     },
     h1: {
