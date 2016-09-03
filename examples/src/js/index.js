@@ -2,56 +2,12 @@
 
 (function () {
 
-  var ReactStyleSheets = require('../../../lib/index');
+  var React = require('react');
+  var ReactDOM = require('react-dom');
+  var App = require('./components/app');
 
-  ReactStyleSheets.setOptions({
-    obfuscate: true,
-    minify: false,
-    vendorPrefixes: {
-      transform: ['webkit', 'moz', 'ms', 'o'],
-      transformOrigin: ['webkit', 'moz', 'ms', 'o']
-    }
-  });
+  require('./styles');
 
-  var bodyHtml = {
-    margin: 0,
-    padding: 0,
-    fontFamily: ['arail', 'helvetica', 'sans-serif'].join(', '),
-    fontSize: 14
-  };
-
-  ReactStyleSheets.createGlobalTagStyles({
-    '*': {
-      boxSizing: 'border-box'
-    },
-    body: bodyHtml,
-    html: bodyHtml,
-    p: {
-      margin: [10, 0],
-      transform: 'rotate(10deg)',
-      transformOrigin: '0 0',
-      opacity: 0.5,
-      hover: {
-        color: 'red',
-        before: {
-          content: '">"'
-        }
-      }
-    },
-    h1: {
-      margin: {
-        top: 10,
-        bottom: 10
-      }
-    }
-  });
-
-  var classNames = ReactStyleSheets.createUniqueClassStyles({
-    myClass: {
-      color: 'green'
-    }
-  });
-
-  console.log(classNames);
+  ReactDOM.render(<App />, document.getElementById('app'));
 
 })();

@@ -5,8 +5,8 @@
   "main": "lib/index.js",
   "scripts": {
     "start": "http-server examples/ -c-0 -o",
-    "build": "mkdir -p examples/build/js && browserify examples/src/js/index.js -o examples/build/js/index.js",
-    "watch": "mkdir -p examples/build/js && watchify examples/src/js/index.js -o examples/build/js/index.js -v",
+    "build": "mkdir -p examples/build/js && browserify -t babelify examples/src/js/index.js -o examples/build/js/index.js",
+    "watch": "mkdir -p examples/build/js && watchify -t babelify examples/src/js/index.js -o examples/build/js/index.js -v",
     "test": "eslint -c node_modules/eslintrc/.eslintrc-es5-react lib/ examples/src/js/"
   },
   "repository": {
@@ -27,6 +27,8 @@
   },
   "homepage": "https://github.com/jakesidsmith/react-style-sheets#readme",
   "devDependencies": {
+    "babel-preset-react": "=6.11.1",
+    "babelify": "=7.3.0",
     "browserify": "=13.1.0",
     "eslint": "=3.4.0",
     "eslintrc": "git+https://github.com/JakeSidSmith/eslintrc.git#v0.0.2",
