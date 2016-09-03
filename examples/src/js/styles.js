@@ -46,6 +46,13 @@
     ul: {
       margin: [10, 'auto'],
       paddingLeft: 20
+    },
+    pre: {
+      padding: 5,
+      borderRadius: 2,
+      border: [1 ,'solid', '#ccc'],
+      backgroundColor: '#eee',
+      overflow: 'auto'
     }
   });
 
