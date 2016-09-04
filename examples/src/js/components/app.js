@@ -58,6 +58,23 @@
               </pre>
             </li>
             <li>
+              You can create and utilize CSS animations
+              <pre>
+                {
+                  'ReactStyleSheets.createUniqueKeyframeAnimation({\n' +
+                  '  animationName: {\n' +
+                  '    \'0%\': {\n' +
+                  '      opacity: 0;\n' +
+                  '    },\n' +
+                  '    \'100%\': {\n' +
+                  '      opacity: 1;\n' +
+                  '    }\n' +
+                  '  }\n' +
+                  '});'
+                }
+              </pre>
+            </li>
+            <li>
               You can use advanced selectors like hover, active, disabled, firstChild, etc
               <pre>
                 {
