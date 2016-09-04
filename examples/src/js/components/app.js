@@ -44,6 +44,9 @@
               or accessed by a unique class name (more info below)
             </li>
             <li>
+              No need to manually implement hover, active, etc states in javascript (more info below)
+            </li>
+            <li>
               You can add global styles for all HTML elements (by tag name)
               <pre>
                 {
@@ -102,6 +105,7 @@
             </li>
             <li>
               You can easily define styles with our intuative API
+              (automatically adds units, joins arrays, and more)
               <pre>
                 {
                   'ReactStyleSheets.createGlobalTagStyles({\n' +
@@ -116,10 +120,12 @@
                   '  p {\n' +
                   '    margin: 10px auto;\n' +
                   '  }\n' +
-                  '</style>\n\n' +
-
-                  '// or\n\n' +
-
+                  '</style>'
+                }
+              </pre>
+              Break up styles with nesting
+              <pre>
+                {
                   'ReactStyleSheets.createGlobalTagStyles({\n' +
                   '  p: {\n' +
                   '    margin: {\n' +
@@ -174,7 +180,7 @@
 
                   '// You can then use this in your React components\n\n' +
 
-                  '<div classNames={classNames.myClas}>\n' +
+                  '<div className={classNames.myClas}>\n' +
                   '  Hello, World!\n' +
                   '</div>\n\n' +
 
