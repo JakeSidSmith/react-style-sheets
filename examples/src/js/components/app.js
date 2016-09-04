@@ -180,7 +180,7 @@
 
                   '// You can then use this in your React components\n\n' +
 
-                  '<div className={classNames.myClas}>\n' +
+                  '<div className={classNames.myClass}>\n' +
                   '  Hello, World!\n' +
                   '</div>\n\n' +
 
