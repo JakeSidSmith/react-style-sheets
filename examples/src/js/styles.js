@@ -50,7 +50,7 @@
     pre: {
       padding: 5,
       borderRadius: 2,
-      border: [1 ,'solid', '#ccc'],
+      border: [1, 'solid', '#ccc'],
       backgroundColor: '#eee',
       overflow: 'auto'
     }

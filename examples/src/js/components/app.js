@@ -3,7 +3,6 @@
 (function () {
 
   var React = require('react');
-  var ReactDOM = require('react-dom');
   var ReactStyleSheets = require('../../../../lib/index');
 
   var classNames = ReactStyleSheets.createUniqueClassStyles({
