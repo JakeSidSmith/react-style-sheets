@@ -29,7 +29,7 @@ Unlike React Native (or libraries like [Radium](https://github.com/FormidableLab
 * The styles are not inlined, instead they are added in a style tag and either available globally, or accessed by a unique class name (see examples)
 * No need to manually implement hover, active, etc states in javascript
 * You can still use inline styles without the need for complex extending of styles
-* Easily extend / override reusable components styles by concatenating classNames
+* Easily extend / override reusable components styles by concatenating class names
 * You can add global styles for all HTML elements (by tag name)
 * You can create and utilize CSS keyframe animations
 * You can use advanced selectors like hover, active, disabled, firstChild, etc
