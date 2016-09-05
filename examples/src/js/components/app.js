@@ -208,6 +208,9 @@
               Automatically add vendor prefixes
             </li>
             <li>
+              Use variables and mixins (functions)
+            </li>
+            <li>
               No additional dependencies - parse and bundle your styles with your chosen javascript build tools
             </li>
             <li>
