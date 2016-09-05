@@ -47,9 +47,10 @@ Benefits of React Style Sheets over using CSS, and CSS pre/post-processors inclu
 
 ## Examples
 
+### Obfuscated class names
+
 ```javascript
 // Define your styles
-
 var classNames = ReactStyleSheets.createUniqueClassStyles({
   myClass: {
     color: 'red'
@@ -57,13 +58,11 @@ var classNames = ReactStyleSheets.createUniqueClassStyles({
 });
 
 // And you end up with some classNames like the following
-
 {
   myClass: 'myClass_obfus'
 }
 
 // You can then use this in your React components
-
 <div className={classNames.myClass}>
   Hello, World!
 </div>
@@ -79,13 +78,7 @@ This generates the following style tag and appends it to the head tag
 </style>
 ```
 
-```javascript
-render: function () {
-  return (
-    <div className={classNames.myClass + ' ' + this.props.className} />
-  );
-}
-```
+### Global tag styles
 
 ```javascript
 ReactStyleSheets.createGlobalTagStyles({
@@ -95,9 +88,65 @@ ReactStyleSheets.createGlobalTagStyles({
 });
 ```
 
+Generates the following styles (available globally)
+
+```html
+<style type="text/css">
+  p {
+    margin: 10px auto;
+  }
+</style>
+```
+
+### Automatically add units and build up style values from arrays
+
 ```javascript
-ReactStyleSheets.createUniqueKeyframeAnimation({
-  animationName: {
+ReactStyleSheets.createGlobalTagStyles({
+  p: {
+    margin: [10, 'auto']
+  }
+});
+```
+
+Generates the following styles
+
+```html
+<style type="text/css">
+  p {
+    margin: 10px auto;
+  }
+</style>
+```
+
+### Break up style definitions with nesting
+
+```javascript
+ReactStyleSheets.createGlobalTagStyles({
+  p: {
+    margin: {
+      top: 10,
+      bottom: 10
+    }
+  }
+});
+```
+
+Generates the following styles
+
+```html
+<style type="text/css">
+  p {
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+</style>
+```
+
+### Utilize CSS keyframe animations
+
+```javascript
+var animations = ReactStyleSheets.createUniqueKeyframeAnimation({
+  myAnimation: {
     '0%': {
       opacity: 0;
     },
@@ -106,7 +155,25 @@ ReactStyleSheets.createUniqueKeyframeAnimation({
     }
   }
 });
+
+var classNames = ReactStyleSheets.createUniqueClassStyles({
+  myClass: {
+    animation: animations.myAnimation
+  }
+})
 ```
+
+### Extend styles easily in reusable components
+
+```javascript
+render: function () {
+  return (
+    <div className={classNames.myClass + ' ' + this.props.className} />
+  );
+}
+```
+
+### Use state selectors like hover, active, disabled, firstChild, etc
 
 ```javascript
 ReactStyleSheets.createGlobalTagStyles({
@@ -119,6 +186,8 @@ ReactStyleSheets.createGlobalTagStyles({
 });
 ```
 
+### Use pseudo element selectors like before, after and selection
+
 ```javascript
 ReactStyleSheets.createGlobalTagStyles({
   li: {
@@ -128,6 +197,8 @@ ReactStyleSheets.createGlobalTagStyles({
   }
 });
 ```
+
+### Nest state / pseudo element selectors
 
 ```javascript
 ReactStyleSheets.createGlobalTagStyles({
@@ -139,40 +210,4 @@ ReactStyleSheets.createGlobalTagStyles({
     }
   }
 });
-```
-
-```javascript
-ReactStyleSheets.createGlobalTagStyles({
-  p: {
-    margin: [10, 'auto']
-  }
-});
-
-// Outputs
-
-<style type="text/css">
-  p {
-    margin: 10px auto;
-  }
-</style>
-```
-
-```javascript
-ReactStyleSheets.createGlobalTagStyles({
-  p: {
-    margin: {
-      top: 10,
-      bottom: 10
-    }
-  }
-});
-
-// Outputs
-
-<style type="text/css">
-  p {
-    margin-top: 10px;
-    margin-bottom: 10px;
-  }
-</style>
 ```
