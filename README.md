@@ -68,7 +68,7 @@ var classNames = ReactStyleSheets.createUniqueClassStyles({
 </div>
 ```
 
-This generates the following style tag and appends it to the head tag
+This also generates the following style tag and appends it to the head tag
 
 ```html
 <style type="text/css">
