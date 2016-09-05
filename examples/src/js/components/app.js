@@ -154,7 +154,7 @@
               </pre>
             </li>
             <li>
-              You can easily define styles with our intuative API
+              You can easily define styles with our intuitive API
               (automatically adds units, joins arrays, and more)
               <pre>
                 {
