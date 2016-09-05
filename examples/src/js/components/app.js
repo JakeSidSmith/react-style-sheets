@@ -73,7 +73,7 @@
                 {
                   'render: function () {\n' +
                   '  return (\n' +
-                  '    <div className={classNames.className + \' \' + this.props.className} />\n' +
+                  '    <div className={classNames.myClass + \' \' + this.props.className} />\n' +
                   '  );\n' +
                   '}'
                 }
