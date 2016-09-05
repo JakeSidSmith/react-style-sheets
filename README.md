@@ -3,7 +3,7 @@ Create cascading style sheets from within your React components
 
 ## About
 
-React Style Sheets allows defining styles in your javascript in a similar way to React Native.
+React Style Sheets allows defining styles in your javascript in a similar way to React Native, but with a twist (see benefits / examples)
 
 ```javascript
 // Define your styles
