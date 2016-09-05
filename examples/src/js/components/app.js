@@ -27,8 +27,27 @@
             About
           </h2>
           <p>
-            React Style Sheets allows defining styles in your javascript in a similar way to React Native,
-            but unlike React Native (or libraries like {
+            React Style Sheets allows defining styles in your javascript in a similar way to React Native.
+          </p>
+          <pre>
+            {
+              '// Define your styles\n\n' +
+
+              'var classNames = ReactStyleSheets.createUniqueClassStyles({\n' +
+              '  myClass: {\n' +
+              '    color: \'red\'\n' +
+              '  }\n' +
+              '});\n\n' +
+
+              '// You can then use this in your React components\n\n' +
+
+              '<div className={classNames.myClass}>\n' +
+              '  Hello, World!\n' +
+              '</div>'
+            }
+          </pre>
+          <p>
+            Unlike React Native (or libraries like {
               <a href="https://github.com/js-next/react-style">
                 React Style
               </a>
@@ -44,6 +63,21 @@
             </li>
             <li>
               No need to manually implement hover, active, etc states in javascript (more info below)
+            </li>
+            <li>
+              You can still use inline styles without the need for complex extending of styles
+            </li>
+            <li>
+              Easily extend / override reusable components styles by concatenating classNames
+              <pre>
+                {
+                  'render: function () {\n' +
+                  '  return (\n' +
+                  '    <div className={classNames.className + \' \' + this.props.className} />\n' +
+                  '  );\n' +
+                  '}'
+                }
+              </pre>
             </li>
             <li>
               You can add global styles for all HTML elements (by tag name)
