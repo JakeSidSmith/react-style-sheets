@@ -211,3 +211,33 @@ ReactStyleSheets.createGlobalTagStyles({
   }
 });
 ```
+
+### Automatically prefix styles with vendor prefixes
+
+```javascript
+ReactStyleSheets.setOptions({
+  vendorPrefixes: {
+    transform: ['webkit', 'moz', 'ms', 'o']
+  }
+});
+
+var classNames = React.createUniqueClassStyles({
+  myClass: {
+    transform: 'rotate(45deg)'
+  }
+});
+```
+
+Generates the following styles
+
+```html
+<style type="text/css">
+  .myClass_obfus {
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    transform: rotate(45deg);
+  }
+</style>
+```
