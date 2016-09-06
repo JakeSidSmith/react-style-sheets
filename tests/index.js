@@ -313,6 +313,38 @@
       expectLinesToMatch(styleTag.innerHTML, expected);
     });
 
+    it('should create styles for nested selectors', function () {
+      var expected = [
+        '',
+        'a {',
+        '  text-decoration: none;',
+        '}',
+        '',
+        'a:hover {',
+        '  text-decoration: underline;',
+        '}',
+        '',
+        'a::before {',
+        '  content: ">";',
+        '}',
+        ''
+      ];
+
+      ReactStyleSheets.createGlobalTagStyles({
+        a: {
+          textDecoration: 'none',
+          hover: {
+            textDecoration: 'underline'
+          },
+          before: {
+            content: '">"'
+          }
+        }
+      });
+
+      expectLinesToMatch(styleTag.innerHTML, expected);
+    });
+
   });
 
 })();
