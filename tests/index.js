@@ -77,7 +77,7 @@
     });
 
     it('should create class styles & add them to the style tag', function () {
-      var expected = /^\np {\n  myClass_[a-z]{5}: red;\n}\n$/;
+      var expected = /^\n\.myClass_[a-z]{5}\s{\n\s\scolor:\sred;\n}\n$/;
 
       ReactStyleSheets.createUniqueClassStyles({
         myClass: {
@@ -86,6 +86,18 @@
       });
 
       expect(styleTag.innerHTML).to.match(expected);
+    });
+
+    it('should create an object for class styles with their unique names as values', function () {
+      var expected = /^myClass_[a-z]{5}$/;
+
+      var classNames = ReactStyleSheets.createUniqueClassStyles({
+        myClass: {
+          color: 'red'
+        }
+      });
+
+      expect(classNames.myClass).to.match(expected);
     });
 
   });
