@@ -236,6 +236,28 @@
       expectLinesToMatch(styleTag.innerHTML, expected);
     });
 
+    it('should suffix pixel values with px', function () {
+      var expected = [
+        '',
+        'p {',
+        '  opacity: 0.5;',
+        '  margin: 10px auto;',
+        '  padding-left: 20px;',
+        '}',
+        ''
+      ];
+
+      ReactStyleSheets.createGlobalTagStyles({
+        p: {
+          opacity: 0.5,
+          margin: [10, 'auto'],
+          paddingLeft: 20
+        }
+      });
+
+      expectLinesToMatch(styleTag.innerHTML, expected);
+    });
+
   });
 
 })();
