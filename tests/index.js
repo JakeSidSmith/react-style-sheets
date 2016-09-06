@@ -16,6 +16,7 @@
     }
   ];
 
+  // Style tag mock
   var styleTag = {
     setAttribute: function () {},
     innerHTML: ''
@@ -39,6 +40,7 @@
     }
   };
 
+  // Add document to global
   global.document = doc;
 
   describe('React Style Sheets', function () {
