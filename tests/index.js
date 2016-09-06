@@ -216,6 +216,28 @@
       expectLinesToMatch(styleTag.innerHTML, expected);
     });
 
+    it('should handle nesting object styles', function () {
+      var expected = [
+        '',
+        'p {',
+        '  margin-top: 10px;',
+        '  margin-bottom: 20px;',
+        '}',
+        ''
+      ];
+
+      ReactStyleSheets.createGlobalTagStyles({
+        p: {
+          margin: {
+            top: 10,
+            bottom: 20
+          }
+        }
+      });
+
+      expectLinesToMatch(styleTag.innerHTML, expected);
+    });
+
     it('should suffix time values with ms', function () {
       var expected = [
         '',
