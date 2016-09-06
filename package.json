@@ -7,7 +7,12 @@
     "start": "http-server examples/ -c-0 -o",
     "build": "mkdir -p examples/build/js && browserify -t babelify examples/src/js/index.js -o examples/build/js/index.js",
     "watch": "mkdir -p examples/build/js && watchify -t babelify examples/src/js/index.js -o examples/build/js/index.js -v",
-    "test": "eslint -c node_modules/eslintrc/.eslintrc-es5-react lib/ examples/src/js/"
+    "lint-lib": "eslint -c node_modules/eslintrc/.eslintrc-es5-react lib/ examples/src/js/",
+    "lint-tests": "eslint -c node_modules/eslintrc/.eslintrc-es5-react-mocha tests/",
+    "lint": "npm run lint-lib && npm run lint-tests",
+    "mocha": "istanbul cover node_modules/mocha/bin/_mocha -- --require tests/helpers/test-setup.js --bail --recursive tests/",
+    "mocha-no-coverage": "mocha --require tests/helpers/test-setup.js --bail --recursive tests/",
+    "test": "npm run lint && npm run mocha"
   },
   "repository": {
     "type": "git",
@@ -34,6 +39,7 @@
     "eslint": "=3.4.0",
     "eslintrc": "git+https://github.com/JakeSidSmith/eslintrc.git#v0.0.2",
     "http-server": "=0.9.0",
+    "istanbul": "=0.4.5",
     "mocha": "=3.0.2",
     "react": "=15.3.1",
     "react-dom": "=15.3.1",
