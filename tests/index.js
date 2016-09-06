@@ -45,6 +45,11 @@
 
   describe('React Style Sheets', function () {
 
+    beforeEach(function () {
+      styleTag.innerHTML = '';
+      expect(styleTag.innerHTML).to.equal('');
+    });
+
     it('should create a style tag and append it to the head tag', function () {
       var getElementsByTagNameSpy = spy(document, 'getElementsByTagName');
       var createElementSpy = spy(document, 'createElement');
@@ -57,6 +62,22 @@
       expect(createElementSpy).to.have.been.calledWith('style');
       expect(setAttributeSpy).to.have.been.calledWith('type', 'text/css');
       expect(appendChildSpy).to.have.been.calledWith(styleTag);
+    });
+
+    it('should create tag styles & add them to the style tag', function () {
+      var expected = (
+        '\np {\n' +
+        '  color: red;\n' +
+        '}\n'
+      );
+
+      ReactStyleSheets.createGlobalTagStyles({
+        p: {
+          color: 'red'
+        }
+      });
+
+      expect(styleTag.innerHTML).to.equal(expected);
     });
 
   });
