@@ -47,7 +47,6 @@
 
     beforeEach(function () {
       styleTag.innerHTML = '';
-      expect(styleTag.innerHTML).to.equal('');
     });
 
     it('should create a style tag and append it to the head tag', function () {
@@ -98,6 +97,23 @@
       });
 
       expect(classNames.myClass).to.match(expected);
+    });
+
+    it('should create keyframe animations & add them to the style tag', function () {
+      var expected = /^\n@keyframes\smyAnimation_[a-z]{5}\s{\n\n0%\s{\n\s\sopacity:\s0;\n}\n\n100%\s{\n\s\sopacity:\s1;\n}\n\n}\n$/;
+
+      ReactStyleSheets.createUniqueKeyframeAnimation({
+        myAnimation: {
+          '0%': {
+            opacity: 0
+          },
+          '100%': {
+            opacity: 1
+          }
+        }
+      });
+
+      expect(styleTag.innerHTML).to.match(expected);
     });
 
   });
