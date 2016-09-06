@@ -39,7 +39,7 @@
 
   describe('React Style Sheets', function () {
 
-    it('should pass this test', function () {
+    it('should create a style tag and append it to the head tag', function () {
       var getElementsByTagNameSpy = spy(document, 'getElementsByTagName');
       var createElementSpy = spy(document, 'createElement');
       var setAttributeSpy = spy(styleTag, 'setAttribute');
