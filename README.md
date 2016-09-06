@@ -44,6 +44,7 @@ Benefits of React Style Sheets over using CSS, and CSS pre/post-processors inclu
 * Use variables and mixins (functions)
 * No additional dependencies - parse and bundle your styles with your chosen javascript build tools
 * Class names are unique (and obfuscated by default) preventing accidental style inheritance
+* No need to invalidate CSS cache
 
 ## Examples
 
