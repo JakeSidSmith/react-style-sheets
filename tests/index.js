@@ -216,6 +216,26 @@
       expectLinesToMatch(styleTag.innerHTML, expected);
     });
 
+    it('should suffix time values with ms', function () {
+      var expected = [
+        '',
+        'p {',
+        '  transition: ease-in-out 1000ms 0 all;',
+        '  animation: name 500ms linear infinite;',
+        '}',
+        ''
+      ];
+
+      ReactStyleSheets.createGlobalTagStyles({
+        p: {
+          transition: ['ease-in-out', 1000, 0, 'all'],
+          animation: ['name', 500, 'linear', 'infinite']
+        }
+      });
+
+      expectLinesToMatch(styleTag.innerHTML, expected);
+    });
+
   });
 
 })();
