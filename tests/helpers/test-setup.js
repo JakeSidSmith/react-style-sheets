@@ -5,20 +5,32 @@
   var chai = require('chai');
 
   // Head tags mock
-  var head = [
+  var headTags = [
     {
-      innerHTML: ''
+      appendChild: function () {}
     }
   ];
+
+  var styleTag = {
+    setAttribute: function () {},
+    innerHTML: ''
+  };
 
   // Document mock
   var doc = {
     getElementsByTagName: function (query) {
-      if (query === 'head') {
-        return head;
+      if (query !== 'head') {
+        throw new Error('No mocks for getElementsByTagName with query: ' + query);
       }
 
-      return null;
+      return headTags;
+    },
+    createElement: function (type) {
+      if (type !== 'style') {
+        throw new Error('No mocks for createElement with type: ' + type);
+      }
+
+      return styleTag;
     }
   };
 
