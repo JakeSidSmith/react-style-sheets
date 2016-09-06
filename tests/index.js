@@ -176,6 +176,26 @@
       expect(animationNames.myAnimation).to.match(expected);
     });
 
+    it('should join arrays provided as style values', function () {
+      var expected = [
+        '',
+        'p {',
+        '  margin: 10px auto;',
+        '  font-family: arial, helvetica, sans-serif;',
+        '}',
+        ''
+      ];
+
+      ReactStyleSheets.createGlobalTagStyles({
+        p: {
+          margin: ['10px', 'auto'],
+          fontFamily: ['arial', 'helvetica', 'sans-serif']
+        }
+      });
+
+      expectLinesToMatch(styleTag.innerHTML, expected);
+    });
+
   });
 
 })();
