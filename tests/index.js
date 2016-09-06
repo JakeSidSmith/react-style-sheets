@@ -176,6 +176,26 @@
       expect(animationNames.myAnimation).to.match(expected);
     });
 
+    it('should spinal-case style names', function () {
+      var expected = [
+        '',
+        'p {',
+        '  box-sizing: border-box;',
+        '  font-family: arial;',
+        '}',
+        ''
+      ];
+
+      ReactStyleSheets.createGlobalTagStyles({
+        p: {
+          boxSizing: 'border-box',
+          fontFamily: 'arial'
+        }
+      });
+
+      expectLinesToMatch(styleTag.innerHTML, expected);
+    });
+
     it('should join arrays provided as style values', function () {
       var expected = [
         '',
