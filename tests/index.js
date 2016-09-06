@@ -159,6 +159,23 @@
       expect(classNames.myClass).to.match(expected);
     });
 
+    it('should create keyframe animations with their unique names as values', function () {
+      var expected = /^myAnimation_[a-z]{5}$/;
+
+      var animationNames = ReactStyleSheets.createUniqueKeyframeAnimation({
+        myAnimation: {
+          '0%': {
+            opacity: 0
+          },
+          '100%': {
+            opacity: 1
+          }
+        }
+      });
+
+      expect(animationNames.myAnimation).to.match(expected);
+    });
+
   });
 
 })();
