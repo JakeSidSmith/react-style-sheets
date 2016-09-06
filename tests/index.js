@@ -43,6 +43,23 @@
   // Add document to global
   global.document = doc;
 
+  var expectLinesToMatch = function expectLinesToMatch (str, arr) {
+    var lines = str.split('\n');
+
+    expect(lines.length).to.equal(arr.length);
+
+    for (var i = 0; i < lines.length; i += 1) {
+      var line = lines[i];
+      var matcher = arr[i];
+
+      if (typeof matcher === 'string') {
+        expect(line).to.equal(matcher);
+      } else {
+        expect(line).to.match(matcher);
+      }
+    }
+  };
+
   describe('React Style Sheets', function () {
 
     beforeEach(function () {
@@ -100,7 +117,21 @@
     });
 
     it('should create keyframe animations & add them to the style tag', function () {
-      var expected = /^\n@keyframes\smyAnimation_[a-z]{5}\s{\n\n0%\s{\n\s\sopacity:\s0;\n}\n\n100%\s{\n\s\sopacity:\s1;\n}\n\n}\n$/;
+      var expected = [
+        '',
+        /^@keyframes\smyAnimation_[a-z]{5}\s{$/,
+        '',
+        '0% {',
+        '  opacity: 0;',
+        '}',
+        '',
+        '100% {',
+        '  opacity: 1;',
+        '}',
+        '',
+        '}',
+        ''
+      ];
 
       ReactStyleSheets.createUniqueKeyframeAnimation({
         myAnimation: {
@@ -113,7 +144,7 @@
         }
       });
 
-      expect(styleTag.innerHTML).to.match(expected);
+      expectLinesToMatch(styleTag.innerHTML, expected);
     });
 
   });
