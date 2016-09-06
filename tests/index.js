@@ -65,11 +65,7 @@
     });
 
     it('should create tag styles & add them to the style tag', function () {
-      var expected = (
-        '\np {\n' +
-        '  color: red;\n' +
-        '}\n'
-      );
+      var expected = '\np {\n  color: red;\n}\n';
 
       ReactStyleSheets.createGlobalTagStyles({
         p: {
@@ -78,6 +74,18 @@
       });
 
       expect(styleTag.innerHTML).to.equal(expected);
+    });
+
+    it('should create class styles & add them to the style tag', function () {
+      var expected = /^\np {\n  myClass_[a-z]{5}: red;\n}\n$/;
+
+      ReactStyleSheets.createUniqueClassStyles({
+        myClass: {
+          color: 'red'
+        }
+      });
+
+      expect(styleTag.innerHTML).to.match(expected);
     });
 
   });
