@@ -258,6 +258,39 @@
       expectLinesToMatch(styleTag.innerHTML, expected);
     });
 
+    it('should auto prefix predefined styles', function () {
+      var expected = [
+        '',
+        'p {',
+        '  -webkit-transform: rotate(45deg);',
+        '  -moz-transform: rotate(45deg);',
+        '  -ms-transform: rotate(45deg);',
+        '  -o-transform: rotate(45deg);',
+        '  transform: rotate(45deg);',
+        '  -webkit-box-sizing: border-box;',
+        '  -moz-box-sizing: border-box;',
+        '  box-sizing: border-box;',
+        '}',
+        ''
+      ];
+
+      ReactStyleSheets.setOptions({
+        vendorPrefixes: {
+          transform: ['webkit', 'moz', 'ms', 'o'],
+          boxSizing: ['webkit', 'moz']
+        }
+      });
+
+      ReactStyleSheets.createGlobalTagStyles({
+        p: {
+          transform: 'rotate(45deg)',
+          boxSizing: 'border-box'
+        }
+      });
+
+      expectLinesToMatch(styleTag.innerHTML, expected);
+    });
+
   });
 
 })();
