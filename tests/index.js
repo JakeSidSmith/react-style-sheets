@@ -24,14 +24,18 @@
   // Document mock
   var doc = {
     getElementsByTagName: function (query) {
-      if (query === 'head') {
-        return headTags;
+      if (query !== 'head') {
+        throw new Error('No mocks for getElementsByTagName with arguments: ' + headTags);
       }
+
+      return headTags;
     },
     createElement: function (type) {
-      if (type === 'style') {
-        return styleTag;
+      if (type !== 'style') {
+        throw new Error('No mocks for createElement with arguments: ' + styleTag);
       }
+
+      return styleTag;
     }
   };
 
