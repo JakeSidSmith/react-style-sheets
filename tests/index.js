@@ -9,8 +9,14 @@
   var stub = sinon.stub;
 
   var ReactStyleSheets;
-  var warnStub = stub(console, 'warn');
   var anError = /^ReactStyleSheets:\s.*/;
+
+  var warnOriginal = console.warn;
+  var warnStub = stub(console, 'warn', function (message) {
+    if (!anError.test(message)) {
+      warnOriginal(message);
+    }
+  });
 
   // Head tags mock
   var headTags = [
