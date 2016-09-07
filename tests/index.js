@@ -9,11 +9,11 @@
   var stub = sinon.stub;
 
   var ReactStyleSheets;
-  var anError = /^ReactStyleSheets:\s.*/;
+  var aReactStyleSheetsError = /^ReactStyleSheets:\s.*/;
 
   var warnOriginal = console.warn;
   var warnStub = stub(console, 'warn', function (message) {
-    if (!anError.test(message)) {
+    if (!aReactStyleSheetsError.test(message)) {
       warnOriginal(message);
     }
   });
@@ -108,9 +108,9 @@
     });
 
     it('should error if invalid options are provided', function () {
-      expect(ReactStyleSheets.setOptions).to.throw(anError);
-      expect(ReactStyleSheets.setOptions.bind(null, {vendorPrefixes: 'nope'})).to.throw(anError);
-      expect(ReactStyleSheets.setOptions.bind(null, {vendorPrefixes: []})).to.throw(anError);
+      expect(ReactStyleSheets.setOptions).to.throw(aReactStyleSheetsError);
+      expect(ReactStyleSheets.setOptions.bind(null, {vendorPrefixes: 'nope'})).to.throw(aReactStyleSheetsError);
+      expect(ReactStyleSheets.setOptions.bind(null, {vendorPrefixes: []})).to.throw(aReactStyleSheetsError);
     });
 
     it('should error if the same class name is defined twice when not obfuscating', function () {
@@ -126,7 +126,7 @@
 
       ReactStyleSheets.createUniqueClassStyles(styles);
 
-      expect(ReactStyleSheets.createUniqueClassStyles.bind(null, styles)).to.throw(anError);
+      expect(ReactStyleSheets.createUniqueClassStyles.bind(null, styles)).to.throw(aReactStyleSheetsError);
 
       ReactStyleSheets.setOptions({
         obfuscate: true
