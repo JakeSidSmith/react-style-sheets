@@ -9,7 +9,7 @@
   var stub = sinon.stub;
 
   var ReactStyleSheets;
-  var aReactStyleSheetsError = /^ReactStyleSheets:\s.*/;
+  var aReactStyleSheetsError = /^ReactStyleSheets:\s.{10,}/;
 
   var warnOriginal = console.warn;
   var warnStub = stub(console, 'warn', function (message) {
