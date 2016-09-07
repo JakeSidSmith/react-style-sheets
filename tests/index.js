@@ -9,7 +9,7 @@
   var stub = sinon.stub;
 
   var ReactStyleSheets;
-
+  var warnStub = stub(console, 'warn');
   var anError = /^ReactStyleSheets:\s.*/;
 
   // Head tags mock
@@ -69,6 +69,10 @@
       styleTag.innerHTML = '';
     });
 
+    afterEach(function () {
+      warnStub.reset();
+    });
+
     it('should create a style tag and append it to the head tag', function () {
       var getElementsByTagNameSpy = spy(document, 'getElementsByTagName');
       var createElementSpy = spy(document, 'createElement');
@@ -84,8 +88,6 @@
     });
 
     it('should warn if options are set twice', function () {
-      var warnStub = stub(console, 'warn');
-
       ReactStyleSheets.setOptions({
         obfuscate: true
       });
@@ -97,8 +99,6 @@
       });
 
       expect(warnStub).to.have.been.calledOnce;
-
-      warnStub.restore();
     });
 
     it('should error if invalid options are provided', function () {
