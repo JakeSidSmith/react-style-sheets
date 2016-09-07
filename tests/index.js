@@ -10,6 +10,8 @@
 
   var ReactStyleSheets;
 
+  var anError = /^ReactStyleSheets:\s.*/;
+
   // Head tags mock
   var headTags = [
     {
@@ -100,11 +102,29 @@
     });
 
     it('should error if invalid options are provided', function () {
-      var anError = /^ReactStyleSheets:\s.*/;
-
       expect(ReactStyleSheets.setOptions).to.throw(anError);
       expect(ReactStyleSheets.setOptions.bind(null, {vendorPrefixes: 'nope'})).to.throw(anError);
       expect(ReactStyleSheets.setOptions.bind(null, {vendorPrefixes: []})).to.throw(anError);
+    });
+
+    it('should error if the same class name is defined twice when not obfuscating', function () {
+      ReactStyleSheets.setOptions({
+        obfuscate: false
+      });
+
+      var styles = {
+        myClass: {
+          color: 'red'
+        }
+      };
+
+      ReactStyleSheets.createUniqueClassStyles(styles);
+
+      expect(ReactStyleSheets.createUniqueClassStyles.bind(null, styles)).to.throw(anError);
+
+      ReactStyleSheets.setOptions({
+        obfuscate: true
+      });
     });
 
     it('should create tag styles & add them to the style tag', function () {
