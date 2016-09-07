@@ -99,6 +99,14 @@
       warnStub.restore();
     });
 
+    it('should error if invalid options are provided', function () {
+      var anError = /^ReactStyleSheets:\s.*/;
+
+      expect(ReactStyleSheets.setOptions).to.throw(anError);
+      expect(ReactStyleSheets.setOptions.bind(null, {vendorPrefixes: 'nope'})).to.throw(anError);
+      expect(ReactStyleSheets.setOptions.bind(null, {vendorPrefixes: []})).to.throw(anError);
+    });
+
     it('should create tag styles & add them to the style tag', function () {
       var expected = [
         '',
