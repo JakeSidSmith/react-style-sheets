@@ -420,6 +420,40 @@
       expectLinesToMatch(styleTag.innerHTML, expected);
     });
 
+    it('should minify the created styles if minify is set to true', function () {
+      var expectedNotMinified = [
+        '',
+        'p {',
+        '  color: red;',
+        '}',
+        ''
+      ];
+
+      var expectedMinified = 'p{color:red;}';
+
+      var styles = {
+        p: {
+          color: 'red'
+        }
+      };
+
+      ReactStyleSheets.setOptions({
+        minify: false
+      });
+
+      ReactStyleSheets.createGlobalTagStyles(styles);
+      expectLinesToMatch(styleTag.innerHTML, expectedNotMinified);
+
+      styleTag.innerHTML = '';
+
+      ReactStyleSheets.setOptions({
+        minify: true
+      });
+
+      ReactStyleSheets.createGlobalTagStyles(styles);
+      expect(styleTag.innerHTML).to.equal(expectedMinified);
+    });
+
   });
 
 })();
