@@ -6,6 +6,7 @@
   var sinon = require('sinon');
   var expect = chai.expect;
   var spy = sinon.spy;
+  var stub = sinon.stub;
 
   var ReactStyleSheets;
 
@@ -78,6 +79,24 @@
       expect(createElementSpy).to.have.been.calledWith('style');
       expect(setAttributeSpy).to.have.been.calledWith('type', 'text/css');
       expect(appendChildSpy).to.have.been.calledWith(styleTag);
+    });
+
+    it('should warn if options are set twice', function () {
+      var warnStub = stub(console, 'warn');
+
+      ReactStyleSheets.setOptions({
+        obfuscate: true
+      });
+
+      expect(warnStub).not.to.have.been.called;
+
+      ReactStyleSheets.setOptions({
+        obfuscate: true
+      });
+
+      expect(warnStub).to.have.been.calledOnce;
+
+      warnStub.restore();
     });
 
     it('should create tag styles & add them to the style tag', function () {
