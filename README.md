@@ -1,4 +1,4 @@
-# React Style Sheets
+# React Style Sheets [![CircleCI](https://circleci.com/gh/JakeSidSmith/react-style-sheets.svg?style=svg)](https://circleci.com/gh/JakeSidSmith/react-style-sheets)
 Create cascading style sheets from within your React components
 
 ## About
