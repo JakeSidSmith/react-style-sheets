@@ -6,8 +6,17 @@
   var sinon = require('sinon');
   var expect = chai.expect;
   var spy = sinon.spy;
+  var stub = sinon.stub;
 
   var ReactStyleSheets;
+  var aReactStyleSheetsError = /^ReactStyleSheets:\s.{10,}/;
+
+  var warnOriginal = console.warn;
+  var warnStub = stub(console, 'warn', function (message) {
+    if (!aReactStyleSheetsError.test(message)) {
+      warnOriginal(message);
+    }
+  });
 
   // Head tags mock
   var headTags = [
@@ -66,6 +75,10 @@
       styleTag.innerHTML = '';
     });
 
+    afterEach(function () {
+      warnStub.reset();
+    });
+
     it('should create a style tag and append it to the head tag', function () {
       var getElementsByTagNameSpy = spy(document, 'getElementsByTagName');
       var createElementSpy = spy(document, 'createElement');
@@ -78,6 +91,46 @@
       expect(createElementSpy).to.have.been.calledWith('style');
       expect(setAttributeSpy).to.have.been.calledWith('type', 'text/css');
       expect(appendChildSpy).to.have.been.calledWith(styleTag);
+    });
+
+    it('should warn if options are set twice', function () {
+      ReactStyleSheets.setOptions({
+        obfuscate: true
+      });
+
+      expect(warnStub).not.to.have.been.called;
+
+      ReactStyleSheets.setOptions({
+        obfuscate: true
+      });
+
+      expect(warnStub).to.have.been.calledOnce;
+    });
+
+    it('should error if invalid options are provided', function () {
+      expect(ReactStyleSheets.setOptions).to.throw(aReactStyleSheetsError);
+      expect(ReactStyleSheets.setOptions.bind(null, {vendorPrefixes: 'nope'})).to.throw(aReactStyleSheetsError);
+      expect(ReactStyleSheets.setOptions.bind(null, {vendorPrefixes: []})).to.throw(aReactStyleSheetsError);
+    });
+
+    it('should error if the same class name is defined twice when not obfuscating', function () {
+      ReactStyleSheets.setOptions({
+        obfuscate: false
+      });
+
+      var styles = {
+        myClass: {
+          color: 'red'
+        }
+      };
+
+      ReactStyleSheets.createUniqueClassStyles(styles);
+
+      expect(ReactStyleSheets.createUniqueClassStyles.bind(null, styles)).to.throw(aReactStyleSheetsError);
+
+      ReactStyleSheets.setOptions({
+        obfuscate: true
+      });
     });
 
     it('should create tag styles & add them to the style tag', function () {
@@ -371,6 +424,40 @@
       });
 
       expectLinesToMatch(styleTag.innerHTML, expected);
+    });
+
+    it('should minify the created styles if minify is set to true', function () {
+      var expectedNotMinified = [
+        '',
+        'p {',
+        '  color: red;',
+        '}',
+        ''
+      ];
+
+      var expectedMinified = 'p{color:red;}';
+
+      var styles = {
+        p: {
+          color: 'red'
+        }
+      };
+
+      ReactStyleSheets.setOptions({
+        minify: false
+      });
+
+      ReactStyleSheets.createGlobalTagStyles(styles);
+      expectLinesToMatch(styleTag.innerHTML, expectedNotMinified);
+
+      styleTag.innerHTML = '';
+
+      ReactStyleSheets.setOptions({
+        minify: true
+      });
+
+      ReactStyleSheets.createGlobalTagStyles(styles);
+      expect(styleTag.innerHTML).to.equal(expectedMinified);
     });
 
   });
