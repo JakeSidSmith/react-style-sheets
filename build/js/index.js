@@ -148,7 +148,7 @@
 
   var timeSuffixProperties = ['transition', 'transitionDuration', 'transitionDelay', 'animation', 'animationDuration', 'animationDelay'];
 
-  var doubleColonStyles = ['before', 'after', 'firstLetter', 'firstLine', 'selection'];
+  var doubleColonSelectors = ['before', 'after', 'firstLetter', 'firstLine', 'selection'];
 
   var nestedSelectors = ['active', 'after', 'before', 'checked', 'disabled', 'empty', 'enabled', 'firstChild', 'firstLetter', 'firstLine', 'firstOfType', 'focus', 'hover', 'inRange', 'invalid',
   // 'lang', // Takes arguments
@@ -161,6 +161,7 @@
   'onlyOfType', 'onlyChild', 'optional', 'outOfRange', 'readOnly', 'readWrite', 'required', 'root', 'selection', 'target', 'valid', 'visited'];
 
   function warn(message) {
+    /* istanbul ignore else */
     if (typeof console !== 'undefined' && typeof console.warn === 'function') {
       console.warn(messagePrefix + message);
     }
@@ -230,7 +231,7 @@
           error('Nested selectors such as hover, active, before, firstChild, etc, must be an object.');
         }
 
-        var colon = doubleColonStyles.indexOf(key) >= 0 ? '::' : ':';
+        var colon = doubleColonSelectors.indexOf(key) >= 0 ? '::' : ':';
         nested += createStyles(tag + colon + toSpinalCase(key), value);
       } else if (isMediaQuery.test(key)) {
         // Media queries
@@ -266,22 +267,25 @@
     return concat;
   }
 
-  function generateUniqueName(className) {
+  function generateUniqueName(name, existingNames, type) {
     if (obfuscate) {
-      var obfuscatedClassName = className + '_' + generateRandomString(5);
+      var obfuscatedName = name + '_' + generateRandomString(5);
 
-      while (existingClassNames.indexOf(obfuscatedClassName) >= 0) {
-        obfuscatedClassName = className + '_' + generateRandomString(5);
+      while (existingNames.indexOf(obfuscatedName) >= 0) {
+        /* istanbul ignore next */
+        obfuscatedName = name + '_' + generateRandomString(5);
       }
 
-      return obfuscatedClassName;
+      existingNames.push(obfuscatedName);
+      return obfuscatedName;
     }
 
-    if (existingClassNames.indexOf(className) >= 0) {
-      error('The class name "' + className + '" is already in use, please choose another.');
+    if (existingNames.indexOf(name) >= 0) {
+      error('The ' + type + ' name "' + name + '" is already in use, please choose another.');
     }
 
-    return className;
+    existingNames.push(name);
+    return name;
   }
 
   function removeWhitespace(value) {
@@ -316,71 +320,78 @@
 
       optionsSet = true;
     },
-    createTagStyleString: function (styles) {
+    _createGlobalTagStyles: function (styles) {
       var concat = '';
 
       for (var tag in styles) {
         concat += createStyles(tag, styles[tag]);
       }
 
-      return removeWhitespace(concat);
-    },
-    createClassStyleString: function (styles) {
-      var concat = '';
-
-      for (var className in styles) {
-        var obfuscatedClassName = generateUniqueName(className);
-
-        concat += createStyles('.' + className, styles[obfuscatedClassName]);
-
-        existingClassNames.push(obfuscatedClassName);
-      }
-
-      return removeWhitespace(concat);
+      return {
+        keys: null,
+        values: removeWhitespace(concat)
+      };
     },
     createGlobalTagStyles: function (styles) {
-      var styleString = ReactStyleSheets.createTagStyleString(styles);
-      styleTag.innerHTML = styleTag.innerHTML + removeWhitespace(styleString);
+      var generated = ReactStyleSheets._createGlobalTagStyles(styles);
+
+      styleTag.innerHTML = styleTag.innerHTML + generated.values;
     },
-    createUniqueClassStyles: function (styles) {
+    _createUniqueClassStyles: function (styles) {
       var classNames = {};
       var concat = '';
 
       for (var className in styles) {
-        var obfuscatedClassName = generateUniqueName(className);
+        var obfuscatedClassName = generateUniqueName(className, existingClassNames, 'class');
 
         concat += createStyles('.' + obfuscatedClassName, styles[className]);
 
         classNames[className] = obfuscatedClassName;
-        existingClassNames.push(obfuscatedClassName);
       }
 
-      styleTag.innerHTML = styleTag.innerHTML + removeWhitespace(concat);
-
-      return classNames;
+      return {
+        keys: classNames,
+        values: removeWhitespace(concat)
+      };
     },
-    createUniqueKeyframeAnimation: function (styles) {
+    createUniqueClassStyles: function (styles) {
+      var generated = ReactStyleSheets._createUniqueClassStyles(styles);
+
+      styleTag.innerHTML = styleTag.innerHTML + generated.values;
+
+      return generated.keys;
+    },
+    _createUniqueKeyframeAnimation: function (styles) {
       var animations = {};
       var concat = '';
 
       for (var animationName in styles) {
-        var obfuscatedAnimationName = obfuscate ? generateUniqueName(animationName) : animationName;
+        var obfuscatedAnimationName = generateUniqueName(animationName, existingAnimationNames, 'keyframe animation');
 
         concat += '\n@keyframes ' + obfuscatedAnimationName + ' {\n';
-        concat += ReactStyleSheets.createTagStyleString(styles[animationName]);
+        var generated = ReactStyleSheets._createGlobalTagStyles(styles[animationName]);
+        concat += generated.values;
         concat += '\n}\n';
 
         animations[animationName] = obfuscatedAnimationName;
         existingAnimationNames.push(obfuscatedAnimationName);
       }
 
-      styleTag.innerHTML = styleTag.innerHTML + removeWhitespace(concat);
+      return {
+        keys: animations,
+        values: removeWhitespace(concat)
+      };
+    },
+    createUniqueKeyframeAnimation: function (styles) {
+      var generated = ReactStyleSheets._createUniqueKeyframeAnimation(styles);
 
-      return animations;
+      styleTag.innerHTML = styleTag.innerHTML + generated.values;
+
+      return generated.keys;
     }
   };
 
-  /* istanbul ignore next */
+  /* istanbul ignore else */
 
   // Export for commonjs / browserify
   if (typeof exports === 'object' && typeof module !== 'undefined') {
