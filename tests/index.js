@@ -11,13 +11,6 @@
   var ReactStyleSheets;
   var aReactStyleSheetsError = /^ReactStyleSheets:\s.{10,}/;
 
-  var warnOriginal = console.warn;
-  var warnStub = stub(console, 'warn', function (message) {
-    if (!aReactStyleSheetsError.test(message)) {
-      warnOriginal(message);
-    }
-  });
-
   // Head tags mock
   var headTags = [
     {
@@ -52,6 +45,18 @@
   // Add document to global
   global.document = doc;
 
+  var getElementsByTagNameSpy = spy(document, 'getElementsByTagName');
+  var createElementSpy = spy(document, 'createElement');
+  var setAttributeSpy = spy(styleTag, 'setAttribute');
+  var appendChildSpy = spy(headTags[0], 'appendChild');
+
+  var warnOriginal = console.warn;
+  var warnStub = stub(console, 'warn', function (message) {
+    if (!aReactStyleSheetsError.test(message)) {
+      warnOriginal(message);
+    }
+  });
+
   var expectLinesToMatch = function expectLinesToMatch (str, arr) {
     var lines = str.split('\n');
 
@@ -77,14 +82,13 @@
 
     afterEach(function () {
       warnStub.reset();
+      getElementsByTagNameSpy.reset();
+      createElementSpy.reset();
+      setAttributeSpy.reset();
+      appendChildSpy.reset();
     });
 
     it('should create a style tag and append it to the head tag', function () {
-      var getElementsByTagNameSpy = spy(document, 'getElementsByTagName');
-      var createElementSpy = spy(document, 'createElement');
-      var setAttributeSpy = spy(styleTag, 'setAttribute');
-      var appendChildSpy = spy(headTags[0], 'appendChild');
-
       ReactStyleSheets = require('../lib/index');
 
       expect(getElementsByTagNameSpy).to.have.been.calledWith('head');
