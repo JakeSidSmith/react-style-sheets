@@ -519,9 +519,9 @@
         '',
         '@media all and (min-width: 768px) {',
         '',
-        'h1 {',
-        '  color: red;',
-        '}',
+        '  h1 {',
+        '    color: red;',
+        '  }',
         '',
         '}',
         ''
