@@ -74,6 +74,10 @@
     }
   };
 
+  var clearModuleCache = function clearModuleCache (path) {
+    delete require.cache[require.resolve(path)];
+  };
+
   describe('React Style Sheets', function () {
 
     beforeEach(function () {
@@ -95,6 +99,16 @@
       expect(createElementSpy).to.have.been.calledWith('style');
       expect(setAttributeSpy).to.have.been.calledWith('type', 'text/css');
       expect(appendChildSpy).to.have.been.calledWith(styleTag);
+    });
+
+    it('should error if there is no head tag available', function () {
+      clearModuleCache('../lib/index');
+      var orignalHeadTags = headTags;
+      headTags = [];
+
+      expect(require.bind(null, '../lib/index')).to.throw(aReactStyleSheetsError);
+
+      headTags = orignalHeadTags;
     });
 
     it('should warn if options are set twice', function () {
