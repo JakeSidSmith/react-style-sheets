@@ -151,6 +151,35 @@
       });
     });
 
+    it('should error if a style name has hyphens in it', function () {
+      var mediaQuery = {
+        myClass: {
+          '@media all and (min-width: 758px)': {
+            backgroundColor: 'red'
+          }
+        }
+      };
+
+      var hyphenatedClassName = {
+        'my-class': {
+          backgroundColor: 'red'
+        }
+      };
+
+      var hyphenatedStyleName = {
+        myClass: {
+          'background-color': 'red'
+        }
+      };
+
+      expect(ReactStyleSheets.createUniqueClassStyles.bind(null, mediaQuery))
+        .not.to.throw(aReactStyleSheetsError);
+      expect(ReactStyleSheets.createUniqueClassStyles.bind(null, hyphenatedClassName))
+        .not.to.throw(aReactStyleSheetsError);
+      expect(ReactStyleSheets.createUniqueClassStyles.bind(null, hyphenatedStyleName))
+        .to.throw(aReactStyleSheetsError);
+    });
+
     it('should create tag styles & add them to the style tag', function () {
       var expected = [
         '',
