@@ -156,8 +156,8 @@
       ReactStyleSheets.createUniqueClassStyles(styles);
       expect(ReactStyleSheets.createUniqueClassStyles.bind(null, styles)).to.throw(aReactStyleSheetsError);
 
-      ReactStyleSheets.createUniqueKeyframeAnimation(keyframes);
-      expect(ReactStyleSheets.createUniqueKeyframeAnimation.bind(null, keyframes)).to.throw(aReactStyleSheetsError);
+      ReactStyleSheets.createUniqueKeyframeAnimations(keyframes);
+      expect(ReactStyleSheets.createUniqueKeyframeAnimations.bind(null, keyframes)).to.throw(aReactStyleSheetsError);
 
       ReactStyleSheets.setOptions({
         obfuscate: true
@@ -234,19 +234,19 @@
         '',
         /^@keyframes\smyAnimation_[a-z]{5}\s{$/,
         '',
-        '0% {',
-        '  opacity: 0;',
-        '}',
+        '  0% {',
+        '    opacity: 0;',
+        '  }',
         '',
-        '100% {',
-        '  opacity: 1;',
-        '}',
+        '  100% {',
+        '    opacity: 1;',
+        '  }',
         '',
         '}',
         ''
       ];
 
-      ReactStyleSheets.createUniqueKeyframeAnimation({
+      ReactStyleSheets.createUniqueKeyframeAnimations({
         myAnimation: {
           '0%': {
             opacity: 0
@@ -275,7 +275,7 @@
     it('should create keyframe animations with their unique names as values', function () {
       var expected = /^myAnimation_[a-z]{5}$/;
 
-      var animationNames = ReactStyleSheets.createUniqueKeyframeAnimation({
+      var animationNames = ReactStyleSheets.createUniqueKeyframeAnimations({
         myAnimation: {
           '0%': {
             opacity: 0
@@ -519,9 +519,9 @@
         '',
         '@media all and (min-width: 768px) {',
         '',
-        'h1 {',
-        '  color: red;',
-        '}',
+        '  h1 {',
+        '    color: red;',
+        '  }',
         '',
         '}',
         ''
