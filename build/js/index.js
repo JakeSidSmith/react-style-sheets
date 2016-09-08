@@ -135,10 +135,12 @@
       optionsSet = false;
   var existingClassNames = [];
   var existingAnimationNames = [];
+  var isMediaQuery = /^@media/;
   var whitespace = /[\n\r\s]/g;
   var indent = '  ';
   var messagePrefix = 'ReactStyleSheets: ';
   var headTag = document.getElementsByTagName('head')[0];
+  var styleTag;
 
   var commaSeparatedProperties = ['fontFamily'];
 
@@ -148,7 +150,7 @@
 
   var doubleColonStyles = ['before', 'after', 'firstLetter', 'firstLine', 'selection'];
 
-  var nestedStyles = ['active', 'after', 'before', 'checked', 'disabled', 'empty', 'enabled', 'firstChild', 'firstLetter', 'firstLine', 'firstOfType', 'focus', 'hover', 'inRange', 'invalid',
+  var nestedSelectors = ['active', 'after', 'before', 'checked', 'disabled', 'empty', 'enabled', 'firstChild', 'firstLetter', 'firstLine', 'firstOfType', 'focus', 'hover', 'inRange', 'invalid',
   // 'lang', // Takes arguments
   'lastChild', 'lastOfType', 'link',
   // 'not', // Takes arguments
@@ -172,7 +174,7 @@
     error('Could not locate head tag. Ensure your javascript is included after the closing head tag.');
   }
 
-  var styleTag = document.createElement('style');
+  styleTag = document.createElement('style');
   styleTag.setAttribute('type', 'text/css');
   headTag.appendChild(styleTag);
 
@@ -203,37 +205,50 @@
     var prefix = '\n' + tag + ' {\n';
     var nested = '';
 
+    if (isMediaQuery.test(tag)) {
+      error('Media queries must be nested inside your tag / class.');
+    }
+
     for (var key in style) {
-      if (key.indexOf('-') >= 0) {
+      if (!isMediaQuery.test(key) && key.indexOf('-') >= 0) {
         error('Found "-" in a style property name. Style property names must be defined in camelcase.');
       }
 
       var value = style[key];
 
-      // Vendor prefixes
       if (key in vendorPrefixes) {
+        // Vendor prefixes
         for (var i = 0; i < vendorPrefixes[key].length; i += 1) {
           var vendorKey = '-' + vendorPrefixes[key][i] + '-' + key;
           prefix += indent + toSpinalCase(vendorKey) + ': ' + formatValue(key, value) + ';\n';
         }
 
         prefix += indent + toSpinalCase(key) + ': ' + formatValue(key, value) + ';\n';
+      } else if (nestedSelectors.indexOf(key) >= 0) {
         // Nested styles
-      } else if (nestedStyles.indexOf(key) >= 0) {
-        if (typeof value !== 'object') {
-          error('Nested styles such as hover must be an object.');
+        if (typeof value !== 'object' || Array.isArray(value)) {
+          error('Nested selectors such as hover, active, before, firstChild, etc, must be an object.');
         }
 
         var colon = doubleColonStyles.indexOf(key) >= 0 ? '::' : ':';
         nested += createStyles(tag + colon + toSpinalCase(key), value);
-        // Sub styles e.g. {margin: {left, right}}
+      } else if (isMediaQuery.test(key)) {
+        // Media queries
+        if (typeof value !== 'object' || Array.isArray(value)) {
+          error('Media queries must be an object.');
+        }
+
+        nested += '\n' + key + ' {\n';
+        nested += createStyles(tag, value);
+        nested += '\n}\n';
       } else if (typeof value === 'object' && !Array.isArray(value)) {
+        // Sub styles e.g. {margin: {left, right}}
         for (var subKey in value) {
           var keySubKey = key + '-' + subKey;
           prefix += indent + toSpinalCase(keySubKey) + ': ' + formatValue(keySubKey, value[subKey]) + ';\n';
         }
-        // Basic values & arrays
       } else {
+        // Basic values & arrays
         prefix += indent + toSpinalCase(key) + ': ' + formatValue(key, value) + ';\n';
       }
     }
