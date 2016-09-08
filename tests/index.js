@@ -526,6 +526,18 @@
       expectLinesToMatch(styleTag.innerHTML, expected);
     });
 
+    it('should throw an error if media queries are not nested', function () {
+      var nonNestedMediaQuery = {
+        '@media all and (min-width: 768px)': {
+          h1: {
+            color: 'black',
+          }
+        }
+      };
+
+      expect(ReactStyleSheets.createGlobalTagStyles.bind(null, nonNestedMediaQuery)).to.throw(aReactStyleSheetsError);
+    });
+
     it('should throw an error if a media queries value is not an object', function () {
       var nullValue = {
         a: {
