@@ -281,8 +281,24 @@
       } else if (typeof value === 'object' && !Array.isArray(value)) {
         // Sub styles e.g. {margin: {left, right}}
         for (var subKey in value) {
-          var keySubKey = key + '-' + subKey;
-          prefix += indentation + indent + toSpinalCase(keySubKey) + ': ' + formatValue(keySubKey, value[subKey]) + ';\n';
+          var keySubKey;
+
+          if (subKey === 'vertical') {
+            keySubKey = key + '-' + 'top';
+            prefix += indentation + indent + toSpinalCase(keySubKey) + ': ' + formatValue(keySubKey, value[subKey]) + ';\n';
+
+            keySubKey = key + '-' + 'bottom';
+            prefix += indentation + indent + toSpinalCase(keySubKey) + ': ' + formatValue(keySubKey, value[subKey]) + ';\n';
+          } else if (subKey === 'horizontal') {
+            keySubKey = key + '-' + 'right';
+            prefix += indentation + indent + toSpinalCase(keySubKey) + ': ' + formatValue(keySubKey, value[subKey]) + ';\n';
+
+            keySubKey = key + '-' + 'left';
+            prefix += indentation + indent + toSpinalCase(keySubKey) + ': ' + formatValue(keySubKey, value[subKey]) + ';\n';
+          } else {
+            keySubKey = key + '-' + subKey;
+            prefix += indentation + indent + toSpinalCase(keySubKey) + ': ' + formatValue(keySubKey, value[subKey]) + ';\n';
+          }
         }
       } else {
         // Basic values & arrays
