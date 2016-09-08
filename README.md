@@ -128,6 +128,10 @@ ReactStyleSheets.createGlobalTagStyles({
     margin: {
       top: 10,
       bottom: 10
+    },
+    border: {
+      vertical: [1, 'solid', 'black'],
+      horizontal: 'none'
     }
   }
 });
@@ -140,6 +144,10 @@ Generates the following styles
   p {
     margin-top: 10px;
     margin-bottom: 10px;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    border-right: none;
+    border-left: none;
   }
 </style>
 ```
