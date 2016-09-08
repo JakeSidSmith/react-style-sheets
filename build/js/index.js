@@ -138,6 +138,7 @@
   var whitespace = /[\n\r\s]/g;
   var indent = '  ';
   var messagePrefix = 'ReactStyleSheets: ';
+  var headTag = document.getElementsByTagName('head')[0];
 
   var commaSeparatedProperties = ['fontFamily'];
 
@@ -157,21 +158,23 @@
   // 'nthOfType', // Takes arguments
   'onlyOfType', 'onlyChild', 'optional', 'outOfRange', 'readOnly', 'readWrite', 'required', 'root', 'selection', 'target', 'valid', 'visited'];
 
-  var headTag = document.getElementsByTagName('head')[0];
-
-  if (!headTag) {
-    throw new Error(messagePrefix + 'Could not locate head tag. Ensure your javascript is included after the closing head tag.');
-  }
-
-  var styleTag = document.createElement('style');
-  styleTag.setAttribute('type', 'text/css');
-  headTag.appendChild(styleTag);
-
   function warn(message) {
     if (typeof console !== 'undefined' && typeof console.warn === 'function') {
       console.warn(messagePrefix + message);
     }
   }
+
+  function error(message) {
+    throw new Error(messagePrefix + message);
+  }
+
+  if (!headTag) {
+    error('Could not locate head tag. Ensure your javascript is included after the closing head tag.');
+  }
+
+  var styleTag = document.createElement('style');
+  styleTag.setAttribute('type', 'text/css');
+  headTag.appendChild(styleTag);
 
   function toSpinalCase(value) {
     return value.replace(/(^|[a-z])([A-Z])/g, '$1-$2').toLowerCase();
@@ -202,7 +205,7 @@
 
     for (var key in style) {
       if (key.indexOf('-') >= 0) {
-        throw new Error(messagePrefix + 'Found "-" in a style property name. Style property names must be defined in camelcase.');
+        error('Found "-" in a style property name. Style property names must be defined in camelcase.');
       }
 
       var value = style[key];
@@ -218,7 +221,7 @@
         // Nested styles
       } else if (nestedStyles.indexOf(key) >= 0) {
         if (typeof value !== 'object') {
-          throw new Error(messagePrefix + 'Nested styles such as hover must be an object.');
+          error('Nested styles such as hover must be an object.');
         }
 
         var colon = doubleColonStyles.indexOf(key) >= 0 ? '::' : ':';
@@ -249,13 +252,21 @@
   }
 
   function generateUniqueName(className) {
-    var obfuscatedClassName = className + '_' + generateRandomString(5);
+    if (obfuscate) {
+      var obfuscatedClassName = className + '_' + generateRandomString(5);
 
-    while (existingClassNames.indexOf(obfuscatedClassName) >= 0) {
-      obfuscatedClassName = className + '_' + generateRandomString(5);
+      while (existingClassNames.indexOf(obfuscatedClassName) >= 0) {
+        obfuscatedClassName = className + '_' + generateRandomString(5);
+      }
+
+      return obfuscatedClassName;
     }
 
-    return obfuscatedClassName;
+    if (existingClassNames.indexOf(className) >= 0) {
+      error('The class name "' + className + '" is already in use, please choose another.');
+    }
+
+    return className;
   }
 
   function removeWhitespace(value) {
@@ -269,12 +280,12 @@
       }
 
       if (typeof options !== 'object') {
-        throw new Error(messagePrefix + 'Options must be an object.');
+        error('Options must be an object.');
       }
 
       if (typeof options.vendorPrefixes !== 'undefined') {
         if (typeof options.vendorPrefixes !== 'object' || Array.isArray(options.vendorPrefixes)) {
-          throw new Error(messagePrefix + 'vendorPrefixes must be an object with style property names as keys, ' + 'and arrays of prefixes as values.');
+          error('vendorPrefixes must be an object with style property names as keys, ' + 'and arrays of prefixes as values.');
         } else {
           vendorPrefixes = options.vendorPrefixes;
         }
@@ -303,7 +314,7 @@
       var concat = '';
 
       for (var className in styles) {
-        var obfuscatedClassName = obfuscate ? generateUniqueName(className) : className;
+        var obfuscatedClassName = generateUniqueName(className);
 
         concat += createStyles('.' + className, styles[obfuscatedClassName]);
 
@@ -321,7 +332,7 @@
       var concat = '';
 
       for (var className in styles) {
-        var obfuscatedClassName = obfuscate ? generateUniqueName(className) : className;
+        var obfuscatedClassName = generateUniqueName(className);
 
         concat += createStyles('.' + obfuscatedClassName, styles[className]);
 
