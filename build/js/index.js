@@ -183,78 +183,8 @@
     return value.replace(/(^|[a-z])([A-Z])/g, '$1-$2').toLowerCase();
   }
 
-  function formatValue(key, value) {
-    if (Array.isArray(value)) {
-      var separator = commaSeparatedProperties.indexOf(key) >= 0 ? ', ' : ' ';
-      return value.map(formatValue.bind(null, key)).join(separator);
-    } else if (typeof value === 'number') {
-      if (value === 0 || noSuffixProperties.indexOf(key) >= 0) {
-        return value;
-      }
-
-      if (timeSuffixProperties.indexOf(key) >= 0) {
-        return value + 'ms';
-      }
-
-      return value + 'px';
-    }
-
-    return value;
-  }
-
-  function createStyles(tag, style) {
-    var prefix = '\n' + tag + ' {\n';
-    var nested = '';
-
-    if (isMediaQuery.test(tag)) {
-      error('Media queries must be nested inside your tag / class.');
-    }
-
-    for (var key in style) {
-      if (!isMediaQuery.test(key) && key.indexOf('-') >= 0) {
-        error('Found "-" in a style property name. Style property names must be defined in camelcase.');
-      }
-
-      var value = style[key];
-
-      if (key in vendorPrefixes) {
-        // Vendor prefixes
-        for (var i = 0; i < vendorPrefixes[key].length; i += 1) {
-          var vendorKey = '-' + vendorPrefixes[key][i] + '-' + key;
-          prefix += indent + toSpinalCase(vendorKey) + ': ' + formatValue(key, value) + ';\n';
-        }
-
-        prefix += indent + toSpinalCase(key) + ': ' + formatValue(key, value) + ';\n';
-      } else if (nestedSelectors.indexOf(key) >= 0) {
-        // Nested styles
-        if (typeof value !== 'object' || Array.isArray(value)) {
-          error('Nested selectors such as hover, active, before, firstChild, etc, must be an object.');
-        }
-
-        var colon = doubleColonSelectors.indexOf(key) >= 0 ? '::' : ':';
-        nested += createStyles(tag + colon + toSpinalCase(key), value);
-      } else if (isMediaQuery.test(key)) {
-        // Media queries
-        if (typeof value !== 'object' || Array.isArray(value)) {
-          error('Media queries must be an object.');
-        }
-
-        nested += '\n' + key + ' {\n';
-        nested += createStyles(tag, value);
-        nested += '\n}\n';
-      } else if (typeof value === 'object' && !Array.isArray(value)) {
-        // Sub styles e.g. {margin: {left, right}}
-        for (var subKey in value) {
-          var keySubKey = key + '-' + subKey;
-          prefix += indent + toSpinalCase(keySubKey) + ': ' + formatValue(keySubKey, value[subKey]) + ';\n';
-        }
-      } else {
-        // Basic values & arrays
-        prefix += indent + toSpinalCase(key) + ': ' + formatValue(key, value) + ';\n';
-      }
-    }
-
-    return prefix + '}\n' + nested;
+  function removeWhitespace(value) {
+    return minify ? value.replace(whitespace, '') : value;
   }
 
   function generateRandomString(length) {
@@ -288,8 +218,92 @@
     return name;
   }
 
-  function removeWhitespace(value) {
-    return minify ? value.replace(whitespace, '') : value;
+  function formatValue(key, value) {
+    if (Array.isArray(value)) {
+      var separator = commaSeparatedProperties.indexOf(key) >= 0 ? ', ' : ' ';
+      return value.map(formatValue.bind(null, key)).join(separator);
+    } else if (typeof value === 'number') {
+      if (value === 0 || noSuffixProperties.indexOf(key) >= 0) {
+        return value;
+      }
+
+      if (timeSuffixProperties.indexOf(key) >= 0) {
+        return value + 'ms';
+      }
+
+      return value + 'px';
+    }
+
+    return value;
+  }
+
+  function createStyles(tag, style, indentation) {
+    indentation = indentation || '';
+    var prefix = '\n' + indentation + tag + ' {\n';
+    var nested = '';
+
+    if (isMediaQuery.test(tag)) {
+      error('Media queries must be nested inside your tag / class.');
+    }
+
+    for (var key in style) {
+      if (!isMediaQuery.test(key) && key.indexOf('-') >= 0) {
+        error('Found "-" in a style property name. Style property names must be defined in camelcase.');
+      }
+
+      var value = style[key];
+
+      if (key in vendorPrefixes) {
+        // Vendor prefixes
+        for (var i = 0; i < vendorPrefixes[key].length; i += 1) {
+          var vendorKey = '-' + vendorPrefixes[key][i] + '-' + key;
+          prefix += indentation + indent + toSpinalCase(vendorKey) + ': ' + formatValue(key, value) + ';\n';
+        }
+
+        prefix += indentation + indent + toSpinalCase(key) + ': ' + formatValue(key, value) + ';\n';
+      } else if (nestedSelectors.indexOf(key) >= 0) {
+        // Nested styles
+        if (typeof value !== 'object' || Array.isArray(value)) {
+          error('Nested selectors such as hover, active, before, firstChild, etc, must be an object.');
+        }
+
+        var colon = doubleColonSelectors.indexOf(key) >= 0 ? '::' : ':';
+        nested += createStyles(tag + colon + toSpinalCase(key), value, indentation);
+      } else if (isMediaQuery.test(key)) {
+        // Media queries
+        if (typeof value !== 'object' || Array.isArray(value)) {
+          error('Media queries must be an object.');
+        }
+
+        nested += '\n' + indentation + key + ' {\n';
+        nested += createStyles(tag, value, indentation + indent);
+        nested += indentation + '\n' + indentation + '}\n';
+      } else if (typeof value === 'object' && !Array.isArray(value)) {
+        // Sub styles e.g. {margin: {left, right}}
+        for (var subKey in value) {
+          var keySubKey = key + '-' + subKey;
+          prefix += indentation + indent + toSpinalCase(keySubKey) + ': ' + formatValue(keySubKey, value[subKey]) + ';\n';
+        }
+      } else {
+        // Basic values & arrays
+        prefix += indentation + indent + toSpinalCase(key) + ': ' + formatValue(key, value) + ';\n';
+      }
+    }
+
+    return prefix + indentation + '}\n' + nested;
+  }
+
+  function createUnmodifiedIndentedStyles(styles, indentation) {
+    var concat = '';
+
+    for (var tag in styles) {
+      concat += createStyles(tag, styles[tag], indentation);
+    }
+
+    return {
+      keys: null,
+      values: removeWhitespace(concat)
+    };
   }
 
   var ReactStyleSheets = {
@@ -321,16 +335,7 @@
       optionsSet = true;
     },
     _createGlobalTagStyles: function (styles) {
-      var concat = '';
-
-      for (var tag in styles) {
-        concat += createStyles(tag, styles[tag]);
-      }
-
-      return {
-        keys: null,
-        values: removeWhitespace(concat)
-      };
+      return createUnmodifiedIndentedStyles(styles);
     },
     createGlobalTagStyles: function (styles) {
       var generated = ReactStyleSheets._createGlobalTagStyles(styles);
@@ -361,7 +366,7 @@
 
       return generated.keys;
     },
-    _createUniqueKeyframeAnimation: function (styles) {
+    _createUniqueKeyframeAnimations: function (styles) {
       var animations = {};
       var concat = '';
 
@@ -369,12 +374,11 @@
         var obfuscatedAnimationName = generateUniqueName(animationName, existingAnimationNames, 'keyframe animation');
 
         concat += '\n@keyframes ' + obfuscatedAnimationName + ' {\n';
-        var generated = ReactStyleSheets._createGlobalTagStyles(styles[animationName]);
+        var generated = createUnmodifiedIndentedStyles(styles[animationName], indent);
         concat += generated.values;
         concat += '\n}\n';
 
         animations[animationName] = obfuscatedAnimationName;
-        existingAnimationNames.push(obfuscatedAnimationName);
       }
 
       return {
@@ -382,8 +386,8 @@
         values: removeWhitespace(concat)
       };
     },
-    createUniqueKeyframeAnimation: function (styles) {
-      var generated = ReactStyleSheets._createUniqueKeyframeAnimation(styles);
+    createUniqueKeyframeAnimations: function (styles) {
+      var generated = ReactStyleSheets._createUniqueKeyframeAnimations(styles);
 
       styleTag.innerHTML = styleTag.innerHTML + generated.values;
 
