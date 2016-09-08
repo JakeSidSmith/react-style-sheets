@@ -526,6 +526,30 @@
       expectLinesToMatch(styleTag.innerHTML, expected);
     });
 
+    it('should throw an error if a media queries value is not an object', function () {
+      var nullValue = {
+        a: {
+          '@media all and (min-width: 768px)': null
+        }
+      };
+
+      var arrayValue = {
+        a: {
+          '@media all and (min-width: 768px)': []
+        }
+      };
+
+      var numberValue = {
+        a: {
+          '@media all and (min-width: 768px)': 1
+        }
+      };
+
+      expect(ReactStyleSheets.createGlobalTagStyles.bind(null, nullValue)).not.to.throw(aReactStyleSheetsError);
+      expect(ReactStyleSheets.createGlobalTagStyles.bind(null, arrayValue)).to.throw(aReactStyleSheetsError);
+      expect(ReactStyleSheets.createGlobalTagStyles.bind(null, numberValue)).to.throw(aReactStyleSheetsError);
+    });
+
     it('should minify the created styles if minify is set to true', function () {
       var expectedNotMinified = [
         '',
