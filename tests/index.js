@@ -335,6 +335,10 @@
         'p {',
         '  margin-top: 10px;',
         '  margin-bottom: 20px;',
+        '  padding-top: 10px;',
+        '  padding-bottom: 10px;',
+        '  padding-right: 0;',
+        '  padding-left: 0;',
         '}',
         ''
       ];
@@ -344,6 +348,10 @@
           margin: {
             top: 10,
             bottom: 20
+          },
+          padding: {
+            vertical: 10,
+            horizontal: 0
           }
         }
       });
