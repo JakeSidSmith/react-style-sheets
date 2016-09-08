@@ -11,13 +11,6 @@
   var ReactStyleSheets;
   var aReactStyleSheetsError = /^ReactStyleSheets:\s.{10,}/;
 
-  var warnOriginal = console.warn;
-  var warnStub = stub(console, 'warn', function (message) {
-    if (!aReactStyleSheetsError.test(message)) {
-      warnOriginal(message);
-    }
-  });
-
   // Head tags mock
   var headTags = [
     {
@@ -52,6 +45,18 @@
   // Add document to global
   global.document = doc;
 
+  var getElementsByTagNameSpy = spy(document, 'getElementsByTagName');
+  var createElementSpy = spy(document, 'createElement');
+  var setAttributeSpy = spy(styleTag, 'setAttribute');
+  var appendChildSpy = spy(headTags[0], 'appendChild');
+
+  var warnOriginal = console.warn;
+  var warnStub = stub(console, 'warn', function (message) {
+    if (!aReactStyleSheetsError.test(message)) {
+      warnOriginal(message);
+    }
+  });
+
   var expectLinesToMatch = function expectLinesToMatch (str, arr) {
     var lines = str.split('\n');
 
@@ -69,6 +74,10 @@
     }
   };
 
+  var clearModuleCache = function clearModuleCache (path) {
+    delete require.cache[require.resolve(path)];
+  };
+
   describe('React Style Sheets', function () {
 
     beforeEach(function () {
@@ -77,20 +86,29 @@
 
     afterEach(function () {
       warnStub.reset();
+      getElementsByTagNameSpy.reset();
+      createElementSpy.reset();
+      setAttributeSpy.reset();
+      appendChildSpy.reset();
     });
 
     it('should create a style tag and append it to the head tag', function () {
-      var getElementsByTagNameSpy = spy(document, 'getElementsByTagName');
-      var createElementSpy = spy(document, 'createElement');
-      var setAttributeSpy = spy(styleTag, 'setAttribute');
-      var appendChildSpy = spy(headTags[0], 'appendChild');
-
       ReactStyleSheets = require('../lib/index');
 
       expect(getElementsByTagNameSpy).to.have.been.calledWith('head');
       expect(createElementSpy).to.have.been.calledWith('style');
       expect(setAttributeSpy).to.have.been.calledWith('type', 'text/css');
       expect(appendChildSpy).to.have.been.calledWith(styleTag);
+    });
+
+    it('should error if there is no head tag available', function () {
+      clearModuleCache('../lib/index');
+      var orignalHeadTags = headTags;
+      headTags = [];
+
+      expect(require.bind(null, '../lib/index')).to.throw(aReactStyleSheetsError);
+
+      headTags = orignalHeadTags;
     });
 
     it('should warn if options are set twice', function () {
@@ -131,6 +149,35 @@
       ReactStyleSheets.setOptions({
         obfuscate: true
       });
+    });
+
+    it('should error if a style name has hyphens in it', function () {
+      var mediaQuery = {
+        myClass: {
+          '@media all and (min-width: 758px)': {
+            backgroundColor: 'red'
+          }
+        }
+      };
+
+      var hyphenatedClassName = {
+        'my-class': {
+          backgroundColor: 'red'
+        }
+      };
+
+      var hyphenatedStyleName = {
+        myClass: {
+          'background-color': 'red'
+        }
+      };
+
+      expect(ReactStyleSheets.createUniqueClassStyles.bind(null, mediaQuery))
+        .not.to.throw(aReactStyleSheetsError);
+      expect(ReactStyleSheets.createUniqueClassStyles.bind(null, hyphenatedClassName))
+        .not.to.throw(aReactStyleSheetsError);
+      expect(ReactStyleSheets.createUniqueClassStyles.bind(null, hyphenatedStyleName))
+        .to.throw(aReactStyleSheetsError);
     });
 
     it('should create tag styles & add them to the style tag', function () {
@@ -424,6 +471,95 @@
       });
 
       expectLinesToMatch(styleTag.innerHTML, expected);
+    });
+
+    it('should throw an error if a nested selectors value is not an object', function () {
+      var nullValue = {
+        a: {
+          hover: null
+        }
+      };
+
+      var arrayValue = {
+        a: {
+          hover: []
+        }
+      };
+
+      var numberValue = {
+        a: {
+          hover: 1
+        }
+      };
+
+      expect(ReactStyleSheets.createGlobalTagStyles.bind(null, nullValue)).not.to.throw(aReactStyleSheetsError);
+      expect(ReactStyleSheets.createGlobalTagStyles.bind(null, arrayValue)).to.throw(aReactStyleSheetsError);
+      expect(ReactStyleSheets.createGlobalTagStyles.bind(null, numberValue)).to.throw(aReactStyleSheetsError);
+    });
+
+    it('should create styles containing media queries', function () {
+      var expected = [
+        '',
+        'h1 {',
+        '  color: black;',
+        '}',
+        '',
+        '@media all and (min-width: 768px) {',
+        '',
+        'h1 {',
+        '  color: red;',
+        '}',
+        '',
+        '}',
+        ''
+      ];
+
+      ReactStyleSheets.createGlobalTagStyles({
+        h1: {
+          color: 'black',
+          '@media all and (min-width: 768px)': {
+            color: 'red'
+          }
+        }
+      });
+
+      expectLinesToMatch(styleTag.innerHTML, expected);
+    });
+
+    it('should throw an error if media queries are not nested', function () {
+      var nonNestedMediaQuery = {
+        '@media all and (min-width: 768px)': {
+          h1: {
+            color: 'black',
+          }
+        }
+      };
+
+      expect(ReactStyleSheets.createGlobalTagStyles.bind(null, nonNestedMediaQuery)).to.throw(aReactStyleSheetsError);
+    });
+
+    it('should throw an error if a media queries value is not an object', function () {
+      var nullValue = {
+        a: {
+          '@media all and (min-width: 768px)': null
+        }
+      };
+
+      var arrayValue = {
+        a: {
+          '@media all and (min-width: 768px)': []
+        }
+      };
+
+      var numberValue = {
+        a: {
+          '@media all and (min-width: 768px)': 1
+        }
+      };
+
+      expect(ReactStyleSheets.createGlobalTagStyles.bind(null, nullValue)).not.to.throw(aReactStyleSheetsError);
+      expect(ReactStyleSheets.createGlobalTagStyles.bind(null, arrayValue)).to.throw(aReactStyleSheetsError);
+      expect(ReactStyleSheets.createGlobalTagStyles.bind(null, numberValue)).to.throw(aReactStyleSheetsError);
     });
 
     it('should minify the created styles if minify is set to true', function () {

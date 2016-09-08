@@ -27,11 +27,12 @@ Unlike React Native (or libraries like [Radium](https://github.com/FormidableLab
 
 * Styles are only generated once, when the script is first loaded
 * The styles are not inlined, instead they are added in a style tag and either available globally, or accessed by a unique class name (see examples)
-* No need to manually implement hover, active, etc states in javascript
+* No need to manually implement hover, active, etc states, or media queries in javascript
 * You can still use inline styles without the need for complex extending of styles
 * Easily extend / override reusable components styles by concatenating class names
 * You can add global styles for all HTML elements (by tag name)
 * You can create and utilize CSS keyframe animations
+* You can use media queries to adjust styles on different devices
 * You can use advanced selectors like hover, active, disabled, firstChild, etc
 * You can use selectors for pseudo elements like before, after, and selection
 * You can nest selectors
@@ -160,6 +161,19 @@ var animations = ReactStyleSheets.createUniqueKeyframeAnimation({
 var classNames = ReactStyleSheets.createUniqueClassStyles({
   myClass: {
     animation: animations.myAnimation
+  }
+})
+```
+
+### Utilize media queries
+
+```javascript
+var classNames = ReactStyleSheets.createUniqueClassStyles({
+  myClass: {
+    width: '100%',
+    '@media all and (min-width: 768px)': {
+      width: '50%'
+    }
   }
 })
 ```
