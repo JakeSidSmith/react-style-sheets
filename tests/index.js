@@ -473,6 +473,30 @@
       expectLinesToMatch(styleTag.innerHTML, expected);
     });
 
+    it('should throw an error if a nested selectors value is not an object', function () {
+      var nullValue = {
+        a: {
+          hover: null
+        }
+      };
+
+      var arrayValue = {
+        a: {
+          hover: []
+        }
+      };
+
+      var numberValue = {
+        a: {
+          hover: 1
+        }
+      };
+
+      expect(ReactStyleSheets.createGlobalTagStyles.bind(null, nullValue)).not.to.throw(aReactStyleSheetsError);
+      expect(ReactStyleSheets.createGlobalTagStyles.bind(null, arrayValue)).to.throw(aReactStyleSheetsError);
+      expect(ReactStyleSheets.createGlobalTagStyles.bind(null, numberValue)).to.throw(aReactStyleSheetsError);
+    });
+
     it('should create styles containing media queries', function () {
       var expected = [
         '',
