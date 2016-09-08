@@ -131,7 +131,7 @@
       expect(ReactStyleSheets.setOptions.bind(null, {vendorPrefixes: []})).to.throw(aReactStyleSheetsError);
     });
 
-    it('should error if the same class name is defined twice when not obfuscating', function () {
+    it('should error if the same class / keyframe animation name is defined twice when not obfuscating', function () {
       ReactStyleSheets.setOptions({
         obfuscate: false
       });
@@ -142,9 +142,22 @@
         }
       };
 
-      ReactStyleSheets.createUniqueClassStyles(styles);
+      var keyframes = {
+        myAnimation: {
+          '0%': {
+            opacity: 0
+          },
+          '100%': {
+            opacity: 0
+          }
+        }
+      };
 
+      ReactStyleSheets.createUniqueClassStyles(styles);
       expect(ReactStyleSheets.createUniqueClassStyles.bind(null, styles)).to.throw(aReactStyleSheetsError);
+
+      ReactStyleSheets.createUniqueKeyframeAnimation(keyframes);
+      expect(ReactStyleSheets.createUniqueKeyframeAnimation.bind(null, keyframes)).to.throw(aReactStyleSheetsError);
 
       ReactStyleSheets.setOptions({
         obfuscate: true
