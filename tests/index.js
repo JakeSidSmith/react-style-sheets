@@ -473,6 +473,35 @@
       expectLinesToMatch(styleTag.innerHTML, expected);
     });
 
+    it('should create styles containing media queries', function () {
+      var expected = [
+        '',
+        'h1 {',
+        '  color: black;',
+        '}',
+        '',
+        '@media all and (min-width: 768px) {',
+        '',
+        'h1 {',
+        '  color: red;',
+        '}',
+        '',
+        '}',
+        ''
+      ];
+
+      ReactStyleSheets.createGlobalTagStyles({
+        h1: {
+          color: 'black',
+          '@media all and (min-width: 768px)': {
+            color: 'red'
+          }
+        }
+      });
+
+      expectLinesToMatch(styleTag.innerHTML, expected);
+    });
+
     it('should minify the created styles if minify is set to true', function () {
       var expectedNotMinified = [
         '',
