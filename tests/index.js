@@ -478,12 +478,6 @@
     it('should allow nesting selectors', function () {
       var expected = [
         '',
-        'a {',
-        '}',
-        '',
-        'a:hover {',
-        '}',
-        '',
         'a:hover::before {',
         '  content: ">";',
         '}',
