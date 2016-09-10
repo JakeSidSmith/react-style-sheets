@@ -17,7 +17,7 @@
   };
 
   var text = {
-    margin: [10, 'auto']
+    margin: [20, 'auto']
   };
 
   ReactStyleSheets.createGlobalTagStyles({
@@ -44,8 +44,19 @@
     h5: text,
     li: text,
     ul: {
-      margin: [10, 'auto'],
+      margin: [20, 'auto'],
       paddingLeft: 20
+    },
+    hr: {
+      margin: {
+        vertical: 40
+      },
+      height: 0,
+      border: {
+        horizontal: 'none',
+        top: 'none',
+        bottom: [1, 'solid', '#ccc']
+      }
     },
     pre: {
       padding: 5,

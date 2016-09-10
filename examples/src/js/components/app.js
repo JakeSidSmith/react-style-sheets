@@ -47,6 +47,7 @@
           <h2>
             Examples
           </h2>
+          <hr />
           {
             examples.map(function (example) {
               return (

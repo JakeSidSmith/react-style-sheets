@@ -51,6 +51,7 @@
             The result
           </h4>
           <Component />
+          <hr />
         </div>
       );
     }
