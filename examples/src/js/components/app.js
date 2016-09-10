@@ -19,6 +19,11 @@
       name: 'Media Query Example',
       component: require('../examples/2-media-query-example'),
       source: fs.readFileSync(__dirname + '/../examples/2-media-query-example.js', 'utf8')
+    },
+    {
+      name: 'Keyframe Animation Example',
+      component: require('../examples/3-keyframe-animation-example'),
+      source: fs.readFileSync(__dirname + '/../examples/3-keyframe-animation-example.js', 'utf8')
     }
   ];
 
