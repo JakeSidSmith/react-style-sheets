@@ -42,11 +42,6 @@
     h3: text,
     h4: text,
     h5: text,
-    li: text,
-    ul: {
-      margin: [20, 'auto'],
-      paddingLeft: 20
-    },
     hr: {
       margin: {
         vertical: 40

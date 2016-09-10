@@ -11,19 +11,24 @@
 
   var examples = [
     {
-      name: 'Basic Header Example',
-      component: require('../examples/1-basic-header-example'),
-      source: fs.readFileSync(__dirname + '/../examples/1-basic-header-example.js', 'utf8')
+      name: 'Tag Styles Example',
+      component: require('../examples/1-tag-styles-example'),
+      source: fs.readFileSync(__dirname + '/../examples/1-tag-styles-example.js', 'utf8')
+    },
+    {
+      name: 'Class Styles Example',
+      component: require('../examples/2-class-styles-example'),
+      source: fs.readFileSync(__dirname + '/../examples/2-class-styles-example.js', 'utf8')
     },
     {
       name: 'Media Query Example',
-      component: require('../examples/2-media-query-example'),
-      source: fs.readFileSync(__dirname + '/../examples/2-media-query-example.js', 'utf8')
+      component: require('../examples/3-media-query-example'),
+      source: fs.readFileSync(__dirname + '/../examples/3-media-query-example.js', 'utf8')
     },
     {
       name: 'Keyframe Animation Example',
-      component: require('../examples/3-keyframe-animation-example'),
-      source: fs.readFileSync(__dirname + '/../examples/3-keyframe-animation-example.js', 'utf8')
+      component: require('../examples/4-keyframe-animation-example'),
+      source: fs.readFileSync(__dirname + '/../examples/4-keyframe-animation-example.js', 'utf8')
     }
   ];
 

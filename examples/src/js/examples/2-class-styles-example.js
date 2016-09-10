@@ -7,7 +7,7 @@
 
   /* styles start */
   var classNames = ReactStyleSheets.createUniqueClassStyles({
-    basicHeader: {
+    header: {
       margin: [10, 'auto'],
       fontFamily: ['arial', 'helvetica', 'sans-serif'],
       fontSize: 24,
@@ -21,7 +21,7 @@
     render: function () {
       return (
         /* markup start */
-        <h2 className={classNames.basicHeader}>
+        <h2 className={classNames.header}>
           Header
         </h2>
         /* markup end */
