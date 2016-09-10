@@ -41,6 +41,7 @@ Unlike React Native (or libraries like [Radium](https://github.com/FormidableLab
 Benefits of React Style Sheets over using CSS, and CSS pre/post-processors include
 
 * Keep your styles, component logic, and markup in the same file
+* Easily bundle styles with your component libraries
 * Automatically add vendor prefixes
 * Use variables and mixins (functions)
 * No additional dependencies - parse and bundle your styles with your chosen javascript build tools
