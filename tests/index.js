@@ -339,6 +339,11 @@
         '  padding-bottom: 10px;',
         '  padding-right: 0;',
         '  padding-left: 0;',
+        '  border-top: 1px solid transparent;',
+        '  border-bottom: 1px solid transparent;',
+        '  border-right: 1px solid transparent;',
+        '  border-left: 1px solid transparent;',
+        '  border-top: 1px solid red;',
         '}',
         ''
       ];
@@ -352,6 +357,10 @@
           padding: {
             vertical: 10,
             horizontal: 0
+          },
+          border: {
+            all: [1, 'solid', 'transparent'],
+            top: [1, 'solid', 'red']
           }
         }
       });
