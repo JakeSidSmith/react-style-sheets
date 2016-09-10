@@ -52,7 +52,15 @@
       borderRadius: 2,
       border: [1, 'solid', '#ccc'],
       backgroundColor: '#eee',
-      overflow: 'auto'
+      overflow: 'auto',
+      fontFamily: 'monospace',
+      fontSize: 14
+    },
+    textarea: {
+      width: '100%',
+      maxWidth: '100%',
+      fontFamily: 'monospace',
+      fontSize: 14
     }
   });
 

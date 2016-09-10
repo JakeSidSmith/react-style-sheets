@@ -5,8 +5,8 @@
   "main": "lib/index.js",
   "scripts": {
     "start": "http-server examples/ -c-0 -o",
-    "build": "mkdir -p examples/build/js && browserify -t babelify examples/src/js/index.js -o examples/build/js/index.js",
-    "watch": "mkdir -p examples/build/js && watchify -t babelify examples/src/js/index.js -o examples/build/js/index.js -v",
+    "build": "mkdir -p examples/build/js && browserify -t babelify -t brfs examples/src/js/index.js -o examples/build/js/index.js",
+    "watch": "mkdir -p examples/build/js && watchify -t babelify -t brfs examples/src/js/index.js -o examples/build/js/index.js -v",
     "lint-lib": "eslint -c node_modules/eslintrc/.eslintrc-es5-react lib/ examples/src/js/",
     "lint-tests": "eslint -c node_modules/eslintrc/.eslintrc-es5-react-mocha tests/",
     "lint": "npm run lint-lib && npm run lint-tests",
@@ -34,6 +34,7 @@
   "devDependencies": {
     "babel-preset-react": "=6.11.1",
     "babelify": "=7.3.0",
+    "brfs": "=1.4.3",
     "browserify": "=13.1.0",
     "chai": "=3.5.0",
     "eslint": "=3.4.0",
