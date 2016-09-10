@@ -56,8 +56,8 @@
     pre: {
       padding: 5,
       borderRadius: 2,
-      border: [1, 'solid', '#ccc'],
-      backgroundColor: '#eee',
+      border: [1, 'solid', '#eee'],
+      backgroundColor: '#fafafa',
       overflow: 'auto',
       fontFamily: 'monospace',
       fontSize: 14
