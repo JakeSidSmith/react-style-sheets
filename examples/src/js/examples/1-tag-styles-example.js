@@ -10,7 +10,7 @@
     ul: {
       listStyle: 'none',
       margin: [10, 'auto'],
-      padding:0
+      padding: 0
     },
     li: {
       margin: [10, 'auto'],
