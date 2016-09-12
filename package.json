@@ -1,6 +1,6 @@
 {
   "name": "react-style-sheets",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Create cascading style sheets from within your React components",
   "main": "lib/index.js",
   "scripts": {
