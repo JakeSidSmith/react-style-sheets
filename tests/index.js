@@ -261,6 +261,24 @@
     });
 
     it('should not generate empty style blocks', function () {
+      var emptyTags = [
+        ''
+      ];
+
+      ReactStyleSheets.createGlobalTagStyles({
+        a: {
+          hover: {},
+          active: {
+            before: {},
+            selection: {}
+          }
+        }
+      });
+
+      expectLinesToMatch(styleTag.innerHTML, emptyTags);
+
+      styleTag.innerHTML = '';
+
       var expectedTags = [
         '',
         'a:hover {',
@@ -322,6 +340,63 @@
       expectLinesToMatch(styleTag.innerHTML, expectedClasses);
 
       styleTag.innerHTML = '';
+
+      var expectedKeyframeAnimations = [
+        '',
+        /^@keyframes\smyAnimation_[a-z]{5}\s{$/,
+        '',
+        '  0% {',
+        '    opacity: 0;',
+        '  }',
+        '',
+        '  100% {',
+        '    opacity: 1;',
+        '  }',
+        '',
+        '}',
+        ''
+      ];
+
+      ReactStyleSheets.createUniqueKeyframeAnimations({
+        myAnimation: {
+          '0%': {
+            opacity: 0
+          },
+          '100%': {
+            opacity: 1
+          }
+        }
+      });
+
+      expectLinesToMatch(styleTag.innerHTML, expectedKeyframeAnimations);
+
+      styleTag.innerHTML = '';
+
+      var emptyKeyframeAnimations = [
+        '',
+        /^@keyframes\sanotherAnimation_[a-z]{5}\s{$/,
+        '',
+        '  100% {',
+        '    opacity: 1;',
+        '  }',
+        '',
+        '}',
+        ''
+      ];
+
+      ReactStyleSheets.createUniqueKeyframeAnimations({
+        myAnimation: {
+          '0%': {}
+        },
+        anotherAnimation: {
+          '0%': {},
+          '100%': {
+            opacity: 1
+          }
+        }
+      });
+
+      expectLinesToMatch(styleTag.innerHTML, emptyKeyframeAnimations);
     });
 
     it('should create an object for class styles with their unique names as values', function () {
