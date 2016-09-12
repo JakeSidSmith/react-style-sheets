@@ -260,6 +260,70 @@
       expectLinesToMatch(styleTag.innerHTML, expected);
     });
 
+    it('should not generate empty style blocks', function () {
+      var expectedTags = [
+        '',
+        'a:hover {',
+        '  text-decoration: underline;',
+        '}',
+        '',
+        'a:hover::before {',
+        '  content: "";',
+        '}',
+        '',
+        'a:active::selection {',
+        '  color: red;',
+        '}',
+        ''
+      ];
+
+      ReactStyleSheets.createGlobalTagStyles({
+        a: {
+          hover: {
+            textDecoration: 'underline',
+            before: {
+              content: '""'
+            }
+          },
+          active: {
+            before: {},
+            selection: {
+              color: 'red'
+            }
+          }
+        }
+      });
+
+      expectLinesToMatch(styleTag.innerHTML, expectedTags);
+
+      styleTag.innerHTML = '';
+
+      var expectedClasses = [
+        '',
+        /^\.myClass_[a-z]{5}:active::selection\s{$/,
+        '  color: red;',
+        '}',
+        ''
+      ];
+
+      ReactStyleSheets.createUniqueClassStyles({
+        myClass: {
+          hover: {
+          },
+          active: {
+            before: {},
+            selection: {
+              color: 'red'
+            }
+          }
+        }
+      });
+
+      expectLinesToMatch(styleTag.innerHTML, expectedClasses);
+
+      styleTag.innerHTML = '';
+    });
+
     it('should create an object for class styles with their unique names as values', function () {
       var expected = /^myClass_[a-z]{5}$/;
 
@@ -581,43 +645,6 @@
       expect(ReactStyleSheets.createGlobalTagStyles.bind(null, nullValue)).not.to.throw(aReactStyleSheetsError);
       expect(ReactStyleSheets.createGlobalTagStyles.bind(null, arrayValue)).to.throw(aReactStyleSheetsError);
       expect(ReactStyleSheets.createGlobalTagStyles.bind(null, numberValue)).to.throw(aReactStyleSheetsError);
-    });
-
-    it('should not generate empty style blocks', function () {
-      var expected = [
-        '',
-        'a:hover {',
-        '  text-decoration: underline;',
-        '}',
-        '',
-        'a:hover::before {',
-        '  content: "";',
-        '}',
-        '',
-        'a:active::selection {',
-        '  color: red;',
-        '}',
-        ''
-      ];
-
-      ReactStyleSheets.createGlobalTagStyles({
-        a: {
-          hover: {
-            textDecoration: 'underline',
-            before: {
-              content: '""'
-            }
-          },
-          active: {
-            before: {},
-            selection: {
-              color: 'red'
-            }
-          }
-        }
-      });
-
-      expectLinesToMatch(styleTag.innerHTML, expected);
     });
 
     it('should minify the created styles if minify is set to true', function () {
