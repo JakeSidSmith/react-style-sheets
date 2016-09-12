@@ -5,8 +5,8 @@
 (function () {
 
   var React = require('react');
-  var ReactStyleSheets = require('../../../../lib/index');
   var fs = require('fs');
+  var ReactStyleSheets = require('../../../../lib/index');
   var Example = require('./example');
 
   var examples = [

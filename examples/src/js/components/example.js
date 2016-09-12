@@ -3,6 +3,7 @@
 (function () {
 
   var React = require('react');
+  var SyntaxHighlighter = require('react-syntax-highlighter').default;
 
   function createRegex (type) {
     return new RegExp(
@@ -38,15 +39,15 @@
           <h4>
             The styles
           </h4>
-          <pre>
+          <SyntaxHighlighter language="javascript" useInlineStyles={false}>
             {filterFor(this.props.source, styles)}
-          </pre>
+          </SyntaxHighlighter>
           <h4>
             The markup
           </h4>
-          <pre>
+          <SyntaxHighlighter language="html" useInlineStyles={false}>
             {filterFor(this.props.source, markup)}
-          </pre>
+          </SyntaxHighlighter>
           <h4>
             The result
           </h4>
