@@ -1,12 +1,12 @@
 {
   "name": "react-style-sheets",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Create cascading style sheets from within your React components",
   "main": "lib/index.js",
   "scripts": {
     "start": "http-server examples/ -c-0 -o",
-    "build": "mkdir -p examples/build/js && browserify -t babelify examples/src/js/index.js -o examples/build/js/index.js",
-    "watch": "mkdir -p examples/build/js && watchify -t babelify examples/src/js/index.js -o examples/build/js/index.js -v",
+    "build": "mkdir -p examples/build/js && browserify -t babelify -t brfs examples/src/js/index.js -o examples/build/js/index.js",
+    "watch": "mkdir -p examples/build/js && watchify -t babelify -t brfs examples/src/js/index.js -o examples/build/js/index.js -v",
     "lint-lib": "eslint -c node_modules/eslintrc/.eslintrc-es5-react lib/ examples/src/js/",
     "lint-tests": "eslint -c node_modules/eslintrc/.eslintrc-es5-react-mocha tests/",
     "lint": "npm run lint-lib && npm run lint-tests",
@@ -31,18 +31,22 @@
     "url": "https://github.com/jakesidsmith/react-style-sheets/issues"
   },
   "homepage": "https://github.com/jakesidsmith/react-style-sheets#readme",
+  "dependencies": {},
   "devDependencies": {
     "babel-preset-react": "=6.11.1",
     "babelify": "=7.3.0",
+    "brfs": "=1.4.3",
     "browserify": "=13.1.0",
     "chai": "=3.5.0",
     "eslint": "=3.4.0",
     "eslintrc": "git+https://github.com/JakeSidSmith/eslintrc.git#v0.0.2",
+    "highlight.js": "=9.6.0",
     "http-server": "=0.9.0",
     "istanbul": "=0.4.5",
     "mocha": "=3.0.2",
     "react": "=15.3.1",
     "react-dom": "=15.3.1",
+    "react-syntax-highlighter": "=2.4.0",
     "sinon": "=1.17.5",
     "sinon-chai": "=2.8.0",
     "watchify": "=3.7.0"

@@ -260,6 +260,145 @@
       expectLinesToMatch(styleTag.innerHTML, expected);
     });
 
+    it('should not generate empty style blocks', function () {
+      var emptyTags = [
+        ''
+      ];
+
+      ReactStyleSheets.createGlobalTagStyles({
+        a: {
+          hover: {},
+          active: {
+            before: {},
+            selection: {}
+          }
+        }
+      });
+
+      expectLinesToMatch(styleTag.innerHTML, emptyTags);
+
+      styleTag.innerHTML = '';
+
+      var expectedTags = [
+        '',
+        'a:hover {',
+        '  text-decoration: underline;',
+        '}',
+        '',
+        'a:hover::before {',
+        '  content: "";',
+        '}',
+        '',
+        'a:active::selection {',
+        '  color: red;',
+        '}',
+        ''
+      ];
+
+      ReactStyleSheets.createGlobalTagStyles({
+        a: {
+          hover: {
+            textDecoration: 'underline',
+            before: {
+              content: '""'
+            }
+          },
+          active: {
+            before: {},
+            selection: {
+              color: 'red'
+            }
+          }
+        }
+      });
+
+      expectLinesToMatch(styleTag.innerHTML, expectedTags);
+
+      styleTag.innerHTML = '';
+
+      var expectedClasses = [
+        '',
+        /^\.myClass_[a-z]{5}:active::selection\s{$/,
+        '  color: red;',
+        '}',
+        ''
+      ];
+
+      ReactStyleSheets.createUniqueClassStyles({
+        myClass: {
+          hover: {
+          },
+          active: {
+            before: {},
+            selection: {
+              color: 'red'
+            }
+          }
+        }
+      });
+
+      expectLinesToMatch(styleTag.innerHTML, expectedClasses);
+
+      styleTag.innerHTML = '';
+
+      var expectedKeyframeAnimations = [
+        '',
+        /^@keyframes\smyAnimation_[a-z]{5}\s{$/,
+        '',
+        '  0% {',
+        '    opacity: 0;',
+        '  }',
+        '',
+        '  100% {',
+        '    opacity: 1;',
+        '  }',
+        '',
+        '}',
+        ''
+      ];
+
+      ReactStyleSheets.createUniqueKeyframeAnimations({
+        myAnimation: {
+          '0%': {
+            opacity: 0
+          },
+          '100%': {
+            opacity: 1
+          }
+        }
+      });
+
+      expectLinesToMatch(styleTag.innerHTML, expectedKeyframeAnimations);
+
+      styleTag.innerHTML = '';
+
+      var emptyKeyframeAnimations = [
+        '',
+        /^@keyframes\sanotherAnimation_[a-z]{5}\s{$/,
+        '',
+        '  100% {',
+        '    opacity: 1;',
+        '  }',
+        '',
+        '}',
+        ''
+      ];
+
+      ReactStyleSheets.createUniqueKeyframeAnimations({
+        myAnimation: {
+          '0%': {}
+        },
+        anotherAnimation: {
+          '0%': {},
+          '100%': {
+            opacity: 1
+          }
+        }
+      });
+
+      expectLinesToMatch(styleTag.innerHTML, emptyKeyframeAnimations);
+    });
+
     it('should create an object for class styles with their unique names as values', function () {
       var expected = /^myClass_[a-z]{5}$/;
 
@@ -339,6 +478,8 @@
         '  padding-bottom: 10px;',
         '  padding-right: 0;',
         '  padding-left: 0;',
+        '  border: 1px solid transparent;',
+        '  border-top: 1px solid red;',
         '}',
         ''
       ];
@@ -352,6 +493,10 @@
           padding: {
             vertical: 10,
             horizontal: 0
+          },
+          border: {
+            all: [1, 'solid', 'transparent'],
+            top: [1, 'solid', 'red']
           }
         }
       });
@@ -468,12 +613,6 @@
 
     it('should allow nesting selectors', function () {
       var expected = [
-        '',
-        'a {',
-        '}',
-        '',
-        'a:hover {',
-        '}',
         '',
         'a:hover::before {',
         '  content: ">";',

@@ -17,7 +17,7 @@
   };
 
   var text = {
-    margin: [10, 'auto']
+    margin: [20, 'auto']
   };
 
   ReactStyleSheets.createGlobalTagStyles({
@@ -42,17 +42,49 @@
     h3: text,
     h4: text,
     h5: text,
-    li: text,
-    ul: {
-      margin: [10, 'auto'],
-      paddingLeft: 20
+    hr: {
+      margin: {
+        vertical: 40
+      },
+      height: 0,
+      border: {
+        horizontal: 'none',
+        top: 'none',
+        bottom: [1, 'solid', '#ccc']
+      }
     },
     pre: {
       padding: 5,
       borderRadius: 2,
-      border: [1, 'solid', '#ccc'],
-      backgroundColor: '#eee',
-      overflow: 'auto'
+      border: [1, 'solid', '#eee'],
+      backgroundColor: '#fafafa',
+      overflow: 'auto',
+      fontFamily: 'monospace',
+      fontSize: 14
+    },
+    textarea: {
+      width: '100%',
+      maxWidth: '100%',
+      fontFamily: 'monospace',
+      fontSize: 14
+    }
+  });
+
+  ReactStyleSheets.createGlobalTagStyles({
+    h1: {
+      fontSize: 28
+    },
+    h2: {
+      fontSize: 24
+    },
+    h3: {
+      fontSize: 20
+    },
+    h4: {
+      fontSize: 16
+    },
+    h5: {
+      fontSize: 14
     }
   });
 
