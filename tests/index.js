@@ -583,6 +583,43 @@
       expect(ReactStyleSheets.createGlobalTagStyles.bind(null, numberValue)).to.throw(aReactStyleSheetsError);
     });
 
+    it('should not generate empty style blocks', function () {
+      var expected = [
+        '',
+        'a:hover {',
+        '  text-decoration: underline;',
+        '}',
+        '',
+        'a:hover::before {',
+        '  content: "";',
+        '}',
+        '',
+        'a:active::selection {',
+        '  color: red;',
+        '}',
+        ''
+      ];
+
+      ReactStyleSheets.createGlobalTagStyles({
+        a: {
+          hover: {
+            textDecoration: 'underline',
+            before: {
+              content: '""'
+            }
+          },
+          active: {
+            before: {},
+            selection: {
+              color: 'red'
+            }
+          }
+        }
+      });
+
+      expectLinesToMatch(styleTag.innerHTML, expected);
+    });
+
     it('should minify the created styles if minify is set to true', function () {
       var expectedNotMinified = [
         '',
