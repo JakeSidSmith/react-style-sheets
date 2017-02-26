@@ -156,7 +156,7 @@ Generates the following styles
 ### Utilize CSS keyframe animations
 
 ```javascript
-var animations = ReactStyleSheets.createUniqueKeyframeAnimation({
+var animations = ReactStyleSheets.createUniqueKeyframeAnimations({
   myAnimation: {
     '0%': {
       opacity: 0;
@@ -169,7 +169,7 @@ var animations = ReactStyleSheets.createUniqueKeyframeAnimation({
 
 var classNames = ReactStyleSheets.createUniqueClassStyles({
   myClass: {
-    animation: animations.myAnimation
+    animation: [animations.myAnimation, 500, 'ease']
   }
 })
 ```
